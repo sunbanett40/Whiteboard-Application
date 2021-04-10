@@ -1,9 +1,8 @@
 #include <QApplication>
 #include <QDebug>
-
 #include <QScreen>
 #include <QRect>
-
+#include <QDir>
 #include <pthread.h>
 #include <wiringPi.h>
 
@@ -38,14 +37,20 @@ int main(int argc, char *argv[])
     int width = screenGeometry.width();
 
     //creating send window
+    QPixmap sendpix(QDir::currentPath() + "/Icons/send_icon.png");
+
     sendWindow send;
+    send.setWindowIcon(sendpix);
     send.setWindowTitle("Send Window");
     send.resize(width/3, height/2);
     send.move(width/9, height/4);
     send.show();
 
     //creating receive window
+    QPixmap recievepix(QDir::currentPath() + "/Icons/recieve_icon.png");
+
     recieveWindow recieve;
+    recieve.setWindowIcon(recievepix);
     recieve.setWindowTitle("Receive Window");
     recieve.resize(width/3, height/2);
     recieve.move(width*5/9, height/4);
