@@ -17,14 +17,8 @@ public:
     int penWidth();
     void setPenWidth(int width);
 
-    Qt::PenStyle penStyle();
-    void setPenStyle(Qt::PenStyle style);
-
     Qt::PenCapStyle capStyle();
     void setCapStyle(Qt::PenCapStyle style);
-
-    Qt::BrushStyle brushStyle();
-    void setBrushStyle(Qt::BrushStyle style);
 
 public slots:
 

@@ -12,25 +12,30 @@ drawArea::drawArea(QWidget *parent)
 
 bool drawArea::openArea(const QString &file)
 {
-    QImage loadedImage;
-    if (!loadedImage.load(file))
-        return false;
+    QImage loadImage;
 
-    QSize newSize = loadedImage.size().expandedTo(size());
-    resizeImage(&loadedImage, newSize);
-    drawImage = loadedImage;
-    update();
-    return true;
+    //load a new image
+    if (loadImage.load(file))
+    {
+        QSize newSize = loadImage.size().expandedTo(size());
+        resizeImage(&loadImage, newSize);
+
+        //set image to loaded image
+        drawImage = loadImage;
+        update();
+        return true;
+    }
+
+    return false;
 }
 bool drawArea::saveArea(const QString &file, const char *format)
 {
+    //create image and size appropriately
     QImage visibleImage = drawImage;
     resizeImage(&visibleImage, size());
 
-    if (visibleImage.save(file, format)) {
-        return true;
-    }
-    return false;
+    //save file
+    return visibleImage.save(file, format);
 }
 bool drawArea::syncArea()
 {}
@@ -51,14 +56,6 @@ void drawArea::setPenWidth(int width)
 {
     areaPenWidth = width;
 }
-Qt::PenStyle drawArea::penStyle()
-{
-    return areaPenStyle;
-}
-void drawArea::setPenStyle(Qt::PenStyle style)
-{
-    areaPenStyle = style;
-}
 Qt::PenCapStyle drawArea::capStyle()
 {
     return areaCapStyle;
@@ -66,14 +63,6 @@ Qt::PenCapStyle drawArea::capStyle()
 void drawArea::setCapStyle(Qt::PenCapStyle style)
 {
     areaCapStyle = style;
-}
-Qt::BrushStyle drawArea::brushStyle()
-{
-    return areaBrushStyle;
-}
-void drawArea::setBrushStyle(Qt::BrushStyle style)
-{
-    areaBrushStyle = style;
 }
 
 void drawArea::clearArea()

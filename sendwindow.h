@@ -22,12 +22,9 @@ public slots:
 
         void colour();
         void penWidth();
-        void penStyle();
         void capStyle();
-        void brushStyle();
 
 private:
-    bool saveFile(const QByteArray &format);
 
     drawArea *draw;
 };

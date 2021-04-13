@@ -67,28 +67,19 @@ void sendWindow::createMenus()
      connect(clear, &QAction::triggered, draw, &drawArea::clearArea);
 
      //Toolbar
-
      auto *colour = new QAction("&Colour", this);
      auto *width = new QAction("&Pen Width", this);
-     auto *penS = new QAction("&Pen Style", this);
      auto *capS = new QAction("&Cap Style", this);
-     auto *brushS = new QAction("&Brush Style", this);
-
 
      QToolBar *toolbar = addToolBar("main toolbar");
      toolbar->addAction(colour);
      toolbar->addSeparator();
      toolbar->addAction(width);
-     toolbar->addAction(penS);
-     toolbar->addSeparator();
      toolbar->addAction(capS);
-     toolbar->addAction(brushS);
 
      connect(colour, &QAction::triggered, this, &sendWindow::colour);
      connect(width, &QAction::triggered, this, &sendWindow::penWidth);
-     connect(penS, &QAction::triggered, this, &sendWindow::penStyle);
      connect(capS, &QAction::triggered, this, &sendWindow::capStyle);
-     connect(brushS, &QAction::triggered, this, &sendWindow::brushStyle);
 }
 
 void sendWindow::open()
@@ -111,7 +102,7 @@ void sendWindow::saveas()
         fileFilter.append(tr("%1 Files (*.%2)").arg(QString::fromLatin1(format).toUpper(), QString::fromLatin1(format)));
         fileFilter.append(";;");
     }
-    qDebug() << fileFilter;
+    //qDebug() << fileFilter;
 
     //set filename from dialog box
     QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"), QDir::currentPath() + "/untitled", fileFilter);
@@ -128,22 +119,40 @@ void sendWindow::sync()
 
 void sendWindow::colour()
 {
+    //open colour dialogbox
     QColor newColour = QColorDialog::getColor(draw->penColour());
 
-        draw->setColour(newColour);
+    //set new colour
+    draw->setColour(newColour);
 }
 void sendWindow::penWidth()
 {
     bool ok;
-    int newWidth = QInputDialog::getInt(this, tr("Scribble"),
-                                        tr("Select pen width:"),
-                                        draw->penWidth(),
-                                        1, 50, 1, &ok);
+
+    //get pen width
+    int newWidth = QInputDialog::getInt(this, tr("Pen Width"), tr("Select pen width:"),
+                                        draw->penWidth(), 1, 50, 1, &ok);
     if (ok)
     {
         draw->setPenWidth(newWidth);
     }
 }
-void sendWindow::penStyle(){}
-void sendWindow::capStyle(){}
-void sendWindow::brushStyle(){}
+void sendWindow::capStyle()
+{
+    bool ok;
+
+    //List of options
+    QMap<QString, Qt::PenCapStyle> styleMap;
+    styleMap["Round Cap"] = Qt::RoundCap;
+    styleMap["Square Cap"] = Qt::SquareCap;
+    styleMap["Rough Cap"] = Qt::FlatCap;
+
+    //get pen style
+    QString newCapStyle = QInputDialog::getItem(this, tr("Cap Style"), tr("Select cap style:"),
+                                        styleMap.keys(), 1, false, &ok);
+    if (ok)
+    {
+        draw->setCapStyle(styleMap[newCapStyle]);
+    }
+}
+
