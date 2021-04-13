@@ -48,10 +48,9 @@ void drawArea::undo()
     if (history.count() > 0) 
     {
         //Create a painter, overwrite entire image to latest snapshot.
-        QPoint origin = QPoint(0,0);
-        QPainter painter(&drawImage);
-        painter.drawImage(origin, history.last());
-        painter.end();
+        clearArea();
+        drawImage = history.last();
+        update();
 
         //Remove the snapshot we just rolled back to.
         history.removeAt(history.count() - 1);
@@ -92,6 +91,13 @@ void drawArea::clearArea()
 
 void drawArea::mousePressEvent(QMouseEvent *event)
 {
+    //snapshot the canvas (jank mode engage)
+    history.append(drawImage.copy());
+    if (history.count() > historyLength)
+    {
+        history.removeAt(0);
+    }
+
     //if left mouse button pressed
     if (event->button() == Qt::LeftButton)
     {
@@ -117,13 +123,6 @@ void drawArea::mouseReleaseEvent(QMouseEvent *event)
         //draw line to final position and end drawing
         drawLine(event->pos());
         drawing = false;
-    }
-
-    //snapshot the canvas (jank mode engage)
-    history.append(drawImage.copy());
-    if (history.count() > historyLength)
-    {
-        history.removeAt(0);
     }
 }
 
