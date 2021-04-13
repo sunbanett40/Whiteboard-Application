@@ -20,6 +20,9 @@ public slots:
         void saveas();
         void sync();
 
+        //super special jank undo (c)
+        void undo();
+
         void colour();
         void penWidth();
         void capStyle();

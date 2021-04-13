@@ -49,6 +49,15 @@ void sendWindow::createMenus()
      connect(saveas, &QAction::triggered, this, &sendWindow::saveas);
      connect(quit, &QAction::triggered, qApp, &QApplication::quit);
 
+     //Edit Menu
+     QPixmap undopix(QDir::currentPath() + "/Icons/undo.png");
+     auto *undo = new QAction(undopix, "&Undo", this);
+     undo->setShortcut(tr("CTRL+Z"));
+
+     QMenu *edit = menuBar()->addMenu("&Edit");
+     edit->addAction(undo);
+
+     connect(undo, &QAction::triggered, this, &sendWindow::undo);
 
      //Board Menu
      QPixmap syncpix(QDir::currentPath() + "/Icons/sync.png");
@@ -89,6 +98,13 @@ void sendWindow::open()
         if (!fileName.isEmpty())
             draw->openArea(fileName);
 }
+
+//jank undo
+void sendWindow::undo()
+{
+    draw->undo();
+}
+
 void sendWindow::saveas()
 {
 
