@@ -5,6 +5,10 @@
 #include <QToolBar>
 #include <QAction>
 #include <QMainWindow>
+#include <QFileDialog>
+#include <QColorDialog>
+#include <QInputDialog>
+#include <QImageWriter>
 
 #include "sendwindow.h"
 
@@ -79,15 +83,67 @@ void sendWindow::createMenus()
      toolbar->addSeparator();
      toolbar->addAction(capS);
      toolbar->addAction(brushS);
-     /*
-     connect(colour, &QAction::triggered, draw, &sendWindow::open);
-     connect(width, &QAction::triggered, draw, &sendWindow::saveas);
-     connect(penS, &QAction::triggered, draw, &sendWindow::open);
-     connect(capS, &QAction::triggered, draw, &sendWindow::saveas);
-     connect(brushS, &QAction::triggered, draw, &sendWindow::open);*/
+
+     connect(colour, &QAction::triggered, this, &sendWindow::colour);
+     connect(width, &QAction::triggered, this, &sendWindow::penWidth);
+     connect(penS, &QAction::triggered, this, &sendWindow::penStyle);
+     connect(capS, &QAction::triggered, this, &sendWindow::capStyle);
+     connect(brushS, &QAction::triggered, this, &sendWindow::brushStyle);
 }
 
+void sendWindow::open()
+{
+        QString fileName = QFileDialog::getOpenFileName(this,
+                                   tr("Open File"), QDir::currentPath());
+        if (!fileName.isEmpty())
+            draw->openArea(fileName);
+}
+void sendWindow::saveas()
+{
 
-void sendWindow::open(){}
-void sendWindow::saveas(){}
-void sendWindow::sync(){}
+    //get image file formats
+    const QList<QByteArray> imageFormats = QImageWriter::supportedImageFormats();
+
+    //create file filter from QList
+    QString fileFilter = "";
+    for(const QByteArray &format : imageFormats)
+    {
+        fileFilter.append(tr("%1 Files (*.%2)").arg(QString::fromLatin1(format).toUpper(), QString::fromLatin1(format)));
+        fileFilter.append(";;");
+    }
+    qDebug() << fileFilter;
+
+    //set filename from dialog box
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"), QDir::currentPath() + "/untitled", fileFilter);
+
+    //absolute pain
+    char *format = fileName.split(".").last().toUtf8().data();
+
+    //pass to draw area function
+    if (!fileName.isEmpty())
+        draw->saveArea(fileName, format);
+}
+void sendWindow::sync()
+{}
+
+void sendWindow::colour()
+{
+    QColor newColour = QColorDialog::getColor(draw->penColour());
+
+        draw->setColour(newColour);
+}
+void sendWindow::penWidth()
+{
+    bool ok;
+    int newWidth = QInputDialog::getInt(this, tr("Scribble"),
+                                        tr("Select pen width:"),
+                                        draw->penWidth(),
+                                        1, 50, 1, &ok);
+    if (ok)
+    {
+        draw->setPenWidth(newWidth);
+    }
+}
+void sendWindow::penStyle(){}
+void sendWindow::capStyle(){}
+void sendWindow::brushStyle(){}

@@ -11,9 +11,27 @@ drawArea::drawArea(QWidget *parent)
 }
 
 bool drawArea::openArea(const QString &file)
-{}
+{
+    QImage loadedImage;
+    if (!loadedImage.load(file))
+        return false;
+
+    QSize newSize = loadedImage.size().expandedTo(size());
+    resizeImage(&loadedImage, newSize);
+    drawImage = loadedImage;
+    update();
+    return true;
+}
 bool drawArea::saveArea(const QString &file, const char *format)
-{}
+{
+    QImage visibleImage = drawImage;
+    resizeImage(&visibleImage, size());
+
+    if (visibleImage.save(file, format)) {
+        return true;
+    }
+    return false;
+}
 bool drawArea::syncArea()
 {}
 
@@ -125,7 +143,9 @@ void drawArea::drawLine(const QPoint &endPoint)
     QPainter painter(&drawImage);
 
     //create pen and draw line
-    painter.setPen(QPen(areaBrushStyle, areaPenWidth, areaPenStyle, areaCapStyle, Qt::RoundJoin));
+    QPen newPen(areaBrushStyle, areaPenWidth, areaPenStyle, areaCapStyle, Qt::RoundJoin);
+    newPen.setColor(areaColour);
+    painter.setPen(newPen);
     painter.drawLine(prevPoint, endPoint);
 
     //maintain radius whilst drawing
