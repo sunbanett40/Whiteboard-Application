@@ -15,6 +15,11 @@ public:
         void createMenus();
     ~sendWindow();
 
+public slots:
+        void open();
+        void saveas();
+        void sync();
+
 private:
     drawArea *draw;
 

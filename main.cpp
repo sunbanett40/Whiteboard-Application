@@ -9,6 +9,7 @@
 #include "sendwindow.h"
 #include "recievewindow.h"
 
+
 void* worker(void* thread_id)
 {
     //long tid = (long)thread_id;

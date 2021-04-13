@@ -27,6 +27,9 @@ public:
     void setBrushStyle(Qt::BrushStyle style);
 
 public slots:
+
+
+
     void clearArea();
 
 protected:

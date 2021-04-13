@@ -41,6 +41,11 @@ void sendWindow::createMenus()
      file->addSeparator();
      file->addAction(quit);
 
+     connect(open, &QAction::triggered, this, &sendWindow::open);
+     connect(saveas, &QAction::triggered, this, &sendWindow::saveas);
+     connect(quit, &QAction::triggered, qApp, &QApplication::quit);
+
+
      //Board Menu
      QPixmap syncpix(QDir::currentPath() + "/Icons/sync.png");
      auto *sync = new QAction(syncpix, "&Sync", this);
@@ -54,18 +59,35 @@ void sendWindow::createMenus()
      board->addAction(sync);
      board->addAction(clear);
 
+     connect(open, &QAction::triggered, this, &sendWindow::sync);
+     connect(clear, &QAction::triggered, draw, &drawArea::clearArea);
+
      //Toolbar
-     QPixmap colourpix(QDir::currentPath() + "/colour.png");
-     QPixmap sizepix(QDir::currentPath() + "/size.png");
-     QPixmap stylepix(QDir::currentPath() + "/style.png");
+
+     auto *colour = new QAction("&Colour", this);
+     auto *width = new QAction("&Pen Width", this);
+     auto *penS = new QAction("&Pen Style", this);
+     auto *capS = new QAction("&Cap Style", this);
+     auto *brushS = new QAction("&Brush Style", this);
+
 
      QToolBar *toolbar = addToolBar("main toolbar");
-     toolbar->addAction(QIcon(colourpix), "Colour");
+     toolbar->addAction(colour);
      toolbar->addSeparator();
-     toolbar->addAction(QIcon(sizepix), "Pen Size");
-     toolbar->addAction(QIcon(stylepix), "Pen Style");
-
-     connect(quit, &QAction::triggered, qApp, &QApplication::quit);
-
-     connect(clear, &QAction::triggered, draw, &drawArea::clearArea);
+     toolbar->addAction(width);
+     toolbar->addAction(penS);
+     toolbar->addSeparator();
+     toolbar->addAction(capS);
+     toolbar->addAction(brushS);
+     /*
+     connect(colour, &QAction::triggered, draw, &sendWindow::open);
+     connect(width, &QAction::triggered, draw, &sendWindow::saveas);
+     connect(penS, &QAction::triggered, draw, &sendWindow::open);
+     connect(capS, &QAction::triggered, draw, &sendWindow::saveas);
+     connect(brushS, &QAction::triggered, draw, &sendWindow::open);*/
 }
+
+
+void sendWindow::open(){}
+void sendWindow::saveas(){}
+void sendWindow::sync(){}
