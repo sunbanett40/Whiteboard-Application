@@ -14,14 +14,17 @@ TEMPLATE = app
 INCLUDEPATH = G:/1204_Advanced_Programming/P20
 
 SOURCES += main.cpp\
+        drawarea.cpp \
         recievewindow.cpp \
-        sendwindow.cpp \
-        window.cpp
+        sendwindow.cpp
 
 HEADERS  +=\
+        drawarea.h \
         recievewindow.h \
         sendwindow.h \
-        window.h \
         wiringPi.h
 
-FORMS    += window.ui
+FORMS    +=
+
+RESOURCES += \
+    Icons.qrc

@@ -1,12 +1,23 @@
 #ifndef SENDWINDOW_H
 #define SENDWINDOW_H
 
-#include "window.h"
+#include <QMainWindow>
 
-class sendWindow : public Window
+#include "drawarea.h"
+
+
+class sendWindow : public QMainWindow
 {
+    Q_OBJECT
+
 public:
-    sendWindow();
+    explicit sendWindow(QWidget *parent = nullptr);
+        void createMenus();
+    ~sendWindow();
+
+private:
+    drawArea *draw;
+
 };
 
 #endif // SENDWINDOW_H

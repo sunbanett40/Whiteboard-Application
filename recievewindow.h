@@ -1,9 +1,9 @@
 #ifndef RECIEVEWINDOW_H
 #define RECIEVEWINDOW_H
 
-#include "window.h"
+#include <QMainWindow>
 
-class recieveWindow : public Window
+class recieveWindow : public QMainWindow
 {
 public:
     recieveWindow();
