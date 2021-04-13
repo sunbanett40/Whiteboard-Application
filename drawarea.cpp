@@ -1,5 +1,6 @@
 #include <QMouseEvent>
 #include <QPainter>
+#include <QGuiApplication>
 
 #include "drawarea.h"
 
@@ -32,27 +33,27 @@ void drawArea::setPenWidth(int width)
 {
     areaPenWidth = width;
 }
-int drawArea::penStyle()
+Qt::PenStyle drawArea::penStyle()
 {
     return areaPenStyle;
 }
-void drawArea::setPenStyle(int style)
+void drawArea::setPenStyle(Qt::PenStyle style)
 {
     areaPenStyle = style;
 }
-int drawArea::capStyle()
+Qt::PenCapStyle drawArea::capStyle()
 {
     return areaCapStyle;
 }
-void drawArea::setCapStyle(int style)
+void drawArea::setCapStyle(Qt::PenCapStyle style)
 {
     areaCapStyle = style;
 }
-int drawArea::brushStyle()
+Qt::BrushStyle drawArea::brushStyle()
 {
     return areaBrushStyle;
 }
-void drawArea::setBrushStyle(int style)
+void drawArea::setBrushStyle(Qt::BrushStyle style)
 {
     areaBrushStyle = style;
 }
@@ -105,38 +106,51 @@ void drawArea::paintEvent(QPaintEvent *event)
 }
 void drawArea::resizeEvent(QResizeEvent *event)
 {
-    if (width() > drawImage.width() || height() > drawImage.height()) {
-        int newWidth = qMax(width() + 128, drawImage.width());
-        int newHeight = qMax(height() + 128, drawImage.height());
-        resizeImage(&drawImage, QSize(newWidth, newHeight));
+    //if resized window is larger
+    if (width() > drawImage.width() || height() > drawImage.height())
+    {
+        //Create new size information
+        QSize newSize(qMax(width() + 128, drawImage.width()), qMax(height() + 128, drawImage.height()));
+
+        //and resize the widget to the bigger size
+        resizeImage(&drawImage, newSize);
         update();
     }
+
     QWidget::resizeEvent(event);
 }
 
 void drawArea::drawLine(const QPoint &endPoint)
 {
     QPainter painter(&drawImage);
-    painter.setPen(QPen(areaColour, areaPenWidth, Qt::SolidLine, Qt::RoundCap,
-                        Qt::RoundJoin));
+
+    //create pen and draw line
+    painter.setPen(QPen(areaBrushStyle, areaPenWidth, areaPenStyle, areaCapStyle, Qt::RoundJoin));
     painter.drawLine(prevPoint, endPoint);
 
+    //maintain radius whilst drawing
+    //https://doc.qt.io/qt-5/qtwidgets-widgets-scribble-example.html
+    int radius = (areaPenWidth / 2) + 2;
+    update(QRect(prevPoint, endPoint).normalized().adjusted(-radius, -radius, +radius, +radius));
 
-    int rad = (areaPenWidth / 2) + 2;
-    update(QRect(prevPoint, endPoint).normalized()
-                                     .adjusted(-rad, -rad, +rad, +rad));
+    //update point
     prevPoint = endPoint;
 }
 
 void drawArea::resizeImage(QImage *image, const QSize &newSize)
 {
-if (!(image->size() == newSize))
-{
-    QImage newImage(newSize, QImage::Format_RGB32);
-    newImage.fill(qRgb(255, 255, 255));
+    //if the image size is different
+    if (!(image->size() == newSize))
+    {
+        //create blank image of the new size
+        QImage newImage(newSize, QImage::Format_RGB32);
+        newImage.fill(qRgb(255, 255, 255));
 
-    QPainter painter(&newImage);
-    painter.drawImage(QPoint(0, 0), *image);
+        //paint old image to the new image
+        QPainter painter(&newImage);
+        painter.drawImage(QPoint(0, 0), *image);
 
-    *image = newImage;
-}}
+        //return new image
+        *image = newImage;
+    }
+}

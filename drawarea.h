@@ -17,14 +17,14 @@ public:
     int penWidth();
     void setPenWidth(int width);
 
-    int penStyle();
-    void setPenStyle(int style);
+    Qt::PenStyle penStyle();
+    void setPenStyle(Qt::PenStyle style);
 
-    int capStyle();
-    void setCapStyle(int style);
+    Qt::PenCapStyle capStyle();
+    void setCapStyle(Qt::PenCapStyle style);
 
-    int brushStyle();
-    void setBrushStyle(int style);
+    Qt::BrushStyle brushStyle();
+    void setBrushStyle(Qt::BrushStyle style);
 
 public slots:
     void clearArea();
@@ -47,9 +47,8 @@ private:
     QPoint prevPoint;
 
     QColor areaColour = Qt::black;
-
     int areaPenWidth = 4;
-    int areaPenStyle = 1;
-    int areaCapStyle = 1;
-    int areaBrushStyle = 1;
+    Qt::PenStyle areaPenStyle = Qt::SolidLine;
+    Qt::PenCapStyle areaCapStyle = Qt::SquareCap;
+    Qt::BrushStyle areaBrushStyle = Qt::SolidPattern;
 };
