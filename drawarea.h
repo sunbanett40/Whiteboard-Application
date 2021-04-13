@@ -1,4 +1,5 @@
 #include <QWidget>
+#include <QList>
 
 class drawArea : public QWidget
 {
@@ -10,6 +11,7 @@ public:
     bool openArea(const QString &file);
     bool saveArea(const QString &file, const char *format);
     bool syncArea();
+    void undo();
 
     QColor penColour();
     void setColour(const QColor &colour);
@@ -19,6 +21,10 @@ public:
 
     Qt::PenCapStyle capStyle();
     void setCapStyle(Qt::PenCapStyle style);
+    
+    //history of edits on the board
+    QList<QImage> history;
+    int historyLength;
 
 public slots:
 

@@ -8,6 +8,7 @@ drawArea::drawArea(QWidget *parent)
     : QWidget(parent)
 {
     setAttribute(Qt::WA_StaticContents);
+    historyLength = 20;
 }
 
 bool drawArea::openArea(const QString &file)
@@ -39,6 +40,22 @@ bool drawArea::saveArea(const QString &file, const char *format)
 }
 bool drawArea::syncArea()
 {}
+
+//Regresses the state of the draw area to the previous snapshot (if available).
+void drawArea::undo()
+{
+    //Can the draw area be rolled back?
+    if (history.count() > 0) 
+    {
+        //Create a painter, overwrite entire image to latest snapshot.
+        clearArea();
+        drawImage = history.last();
+        update();
+
+        //Remove the snapshot we just rolled back to.
+        history.removeAt(history.count() - 1);
+    }
+}
 
 QColor drawArea::penColour()
 {
@@ -74,6 +91,13 @@ void drawArea::clearArea()
 
 void drawArea::mousePressEvent(QMouseEvent *event)
 {
+    //snapshot the canvas (jank mode engage)
+    history.append(drawImage.copy());
+    if (history.count() > historyLength)
+    {
+        history.removeAt(0);
+    }
+
     //if left mouse button pressed
     if (event->button() == Qt::LeftButton)
     {
