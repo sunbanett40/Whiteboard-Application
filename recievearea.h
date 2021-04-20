@@ -1,15 +1,16 @@
-#ifndef DRAWAREA_H
-#define DRAWAREA_H
+#ifndef RECIEVEAREA_H
+#define RECIEVEAREA_H
 
 #include <QWidget>
 #include <QList>
 
-class drawArea : public QWidget
+class recieveArea : public QWidget
 {
     Q_OBJECT
 
 public:
-    drawArea(QWidget *parent = nullptr);
+    recieveArea(QWidget *parent = nullptr);
+    ~recieveArea();
 
     bool openArea(const QString &file);
     bool saveArea(const QString &file, const char *format);
@@ -24,7 +25,7 @@ public:
 
     Qt::PenCapStyle capStyle();
     void setCapStyle(Qt::PenCapStyle style);
-    
+
     //history of edits on the board
     QList<QImage> history;
     int historyLength;
@@ -33,10 +34,6 @@ public slots:
     void clearArea();
 
 protected:
-    void mousePressEvent(QMouseEvent *event) override;
-    void mouseMoveEvent(QMouseEvent *event) override;
-    void mouseReleaseEvent(QMouseEvent *event) override;
-
     void paintEvent(QPaintEvent *event) override;
     void resizeEvent(QResizeEvent *event) override;
 
