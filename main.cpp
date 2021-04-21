@@ -8,7 +8,6 @@
 
 #include "sendwindow.h"
 #include "recievewindow.h"
-#include "singleton.h"
 
 
 void* worker(void* thread_id)
@@ -37,9 +36,6 @@ int main(int argc, char *argv[])
     QRect  screenGeometry = screen->geometry();
     int height = screenGeometry.height();
     int width = screenGeometry.width();
-
-    //creating singleton class to pass information
-    singleton *commandPasser;
 
 
     //creating send window

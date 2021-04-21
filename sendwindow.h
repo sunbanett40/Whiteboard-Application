@@ -2,7 +2,6 @@
 #define SENDWINDOW_H
 
 #include <QMainWindow>
-
 #include "drawarea.h"
 
 
