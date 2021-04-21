@@ -103,6 +103,7 @@ void sendWindow::open()
 void sendWindow::undo()
 {
     draw->undo();
+
 }
 
 void sendWindow::saveas()

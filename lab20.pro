@@ -17,13 +17,15 @@ SOURCES += main.cpp\
         drawarea.cpp \
         recievearea.cpp \
         recievewindow.cpp \
-        sendwindow.cpp
+        sendwindow.cpp \
+        singleton.cpp
 
 HEADERS  +=\
         drawarea.h \
         recievearea.h \
         recievewindow.h \
         sendwindow.h \
+        singleton.h \
         wiringPi.h
 
 FORMS    +=

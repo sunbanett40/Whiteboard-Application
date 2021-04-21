@@ -12,26 +12,23 @@ public:
     recieveArea(QWidget *parent = nullptr);
     ~recieveArea();
 
-    bool openArea(const QString &file);
-    bool saveArea(const QString &file, const char *format);
-    bool syncArea();
-    void undo();
-
     QColor penColour();
-    void setColour(const QColor &colour);
-
     int penWidth();
-    void setPenWidth(int width);
-
     Qt::PenCapStyle capStyle();
-    void setCapStyle(Qt::PenCapStyle style);
+
 
     //history of edits on the board
     QList<QImage> history;
     int historyLength;
 
 public slots:
+    void syncArea();
     void clearArea();
+    void undo();
+
+    void setColour(const QColor &colour);
+    void setPenWidth(int width);
+    void setCapStyle(Qt::PenCapStyle style);
 
 protected:
     void paintEvent(QPaintEvent *event) override;

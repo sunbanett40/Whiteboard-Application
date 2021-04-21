@@ -13,34 +13,7 @@ recieveArea::recieveArea(QWidget *parent)
 
 recieveArea::~recieveArea() = default;
 
-bool recieveArea::openArea(const QString &file)
-{
-    QImage loadImage;
-
-    //load a new image
-    if (loadImage.load(file))
-    {
-        QSize newSize = loadImage.size().expandedTo(size());
-        resizeImage(&loadImage, newSize);
-
-        //set image to loaded image
-        drawImage = loadImage;
-        update();
-        return true;
-    }
-
-    return false;
-}
-bool recieveArea::saveArea(const QString &file, const char *format)
-{
-    //create image and size appropriately
-    QImage visibleImage = drawImage;
-    resizeImage(&visibleImage, size());
-
-    //save file
-    return visibleImage.save(file, format);
-}
-bool recieveArea::syncArea()
+void recieveArea::syncArea()
 {}
 
 //Regresses the state of the draw area to the previous snapshot (if available).
