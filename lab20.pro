@@ -26,6 +26,7 @@ HEADERS  +=\
         recievearea.h \
         recievewindow.h \
         sendwindow.h \
+        serialstruct.h \
         wiringPi.h
 
 FORMS    +=
