@@ -3,11 +3,15 @@
 
 #include <QQueue>
 
-template <typename  T>
+template <class T>
 class queue
 {
 public:
-    explicit queue(int maxSize);
+    explicit queue(int setupSize)
+    {
+    currentSize=0;
+    maxSize = setupSize;
+    }
 
     void pushToQueue(T const &pushedItem);
     void pullFromQueue(T &pushedItem);

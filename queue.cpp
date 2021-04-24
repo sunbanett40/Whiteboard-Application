@@ -1,6 +1,13 @@
 #include "queue.h"
 
-queue::queue()
+template <class T>
+void queue<T>::pushToQueue(T const &pushedItem)
+{
+
+}
+
+template <class T>
+void queue<T>::pullFromQueue(T &pushedItem)
 {
 
 }
