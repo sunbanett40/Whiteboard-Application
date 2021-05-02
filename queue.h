@@ -2,25 +2,28 @@
 #define QUEUE_H
 
 #include <QQueue>
+#include <QMutex>
 
 template <class T>
 class queue
 {
 public:
-    explicit queue(int setupSize)
-    {
-    currentSize=0;
-    maxSize = setupSize;
-    }
+    explicit queue(int setupSize);
 
     void pushToQueue(T const &pushedItem);
-    void pullFromQueue(T &pushedItem);
+    bool pullFromQueue(T &pulledItem);
 
 private:
+    // Controls queue size
     int currentSize;
     int maxSize;
 
-    //queue of data packets
+    // Is the queue open?
+    bool isOpen;
+
+    QMutex mutex;
+
+    // Queue of data packets
     QQueue<T> serialisedQueue;
 
 };
