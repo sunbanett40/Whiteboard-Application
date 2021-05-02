@@ -1,6 +1,7 @@
 #ifndef SENDTHREAD_H
 #define SENDTHREAD_H
 
+#include<QQueue>
 #include <QMutex>
 #include <QPainter>
 
@@ -21,6 +22,7 @@ protected:
 
 private:
     QMutex mutex;
+    //QQueue<command> &serialQueue;
 };
 
 #endif // SENDTHREAD_H
