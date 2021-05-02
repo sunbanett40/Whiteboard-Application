@@ -37,6 +37,7 @@ int main(int argc, char *argv[])
     int height = screenGeometry.height();
     int width = screenGeometry.width();
 
+
     //creating send window
     QPixmap sendpix(QDir::currentPath() + "/Icons/send_icon.png");
 

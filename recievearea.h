@@ -1,42 +1,36 @@
-#ifndef DRAWAREA_H
-#define DRAWAREA_H
+#ifndef RECIEVEAREA_H
+#define RECIEVEAREA_H
 
 #include <QWidget>
 #include <QList>
 
-class drawArea : public QWidget
+class recieveArea : public QWidget
 {
     Q_OBJECT
 
 public:
-    drawArea(QWidget *parent = nullptr);
-
-    bool openArea(const QString &file);
-    bool saveArea(const QString &file, const char *format);
-    bool syncArea();
-    void undo();
+    recieveArea(QWidget *parent = nullptr);
+    ~recieveArea();
 
     QColor penColour();
-    void setColour(const QColor &colour);
-
     int penWidth();
-    void setPenWidth(int width);
-
     Qt::PenCapStyle capStyle();
-    void setCapStyle(Qt::PenCapStyle style);
-    
+
+
     //history of edits on the board
     QList<QImage> history;
     int historyLength;
 
 public slots:
+    void syncArea();
     void clearArea();
+    void undo();
+
+    void setColour(const QColor &colour);
+    void setPenWidth(int width);
+    void setCapStyle(Qt::PenCapStyle style);
 
 protected:
-    void mousePressEvent(QMouseEvent *event) override;
-    void mouseMoveEvent(QMouseEvent *event) override;
-    void mouseReleaseEvent(QMouseEvent *event) override;
-
     void paintEvent(QPaintEvent *event) override;
     void resizeEvent(QResizeEvent *event) override;
 
