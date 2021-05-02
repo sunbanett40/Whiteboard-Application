@@ -1,16 +1,16 @@
-#ifndef RECIEVEAREA_H
-#define RECIEVEAREA_H
+#ifndef RECEIVEAREA_H
+#define RECEIVEAREA_H
 
 #include <QWidget>
 #include <QList>
 
-class recieveArea : public QWidget
+class receiveArea : public QWidget
 {
     Q_OBJECT
 
 public:
-    recieveArea(QWidget *parent = nullptr);
-    ~recieveArea();
+    receiveArea(QWidget *parent = nullptr);
+    ~receiveArea();
 
     QColor penColour();
     int penWidth();
@@ -50,4 +50,4 @@ private:
     Qt::BrushStyle areaBrushStyle = Qt::SolidPattern;
 };
 
-#endif // RECIEVEAREA_H
+#endif // RECEIVEAREA_H

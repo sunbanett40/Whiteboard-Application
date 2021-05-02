@@ -42,7 +42,7 @@ void sendThread::sendSerialStruct(command serialData)
     mutex.lock();
 
 
-    serialQueue.enqueue(serialData);
+    //serialQueue.enqueue(serialData);
     mutex.unlock();
 
 

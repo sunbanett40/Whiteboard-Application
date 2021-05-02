@@ -2,22 +2,22 @@
 #include <QPainter>
 #include <QGuiApplication>
 
-#include "recievearea.h"
+#include "receivearea.h"
 
-recieveArea::recieveArea(QWidget *parent)
+receiveArea::receiveArea(QWidget *parent)
     : QWidget(parent)
 {
     setAttribute(Qt::WA_StaticContents);
     historyLength = 20;
 }
 
-recieveArea::~recieveArea() = default;
+receiveArea::~receiveArea() = default;
 
-void recieveArea::syncArea()
+void receiveArea::syncArea()
 {}
 
 //Regresses the state of the draw area to the previous snapshot (if available).
-void recieveArea::undo()
+void receiveArea::undo()
 {
     //Can the draw area be rolled back?
     if (history.count() > 0)
@@ -32,39 +32,39 @@ void recieveArea::undo()
     }
 }
 
-QColor recieveArea::penColour()
+QColor receiveArea::penColour()
 {
     return areaColour;
 }
-void recieveArea::setColour(const QColor &colour)
+void receiveArea::setColour(const QColor &colour)
 {
     areaColour = colour;
 }
-int recieveArea::penWidth()
+int receiveArea::penWidth()
 {
     return areaPenWidth;
 }
-void recieveArea::setPenWidth(int width)
+void receiveArea::setPenWidth(int width)
 {
     areaPenWidth = width;
 }
-Qt::PenCapStyle recieveArea::capStyle()
+Qt::PenCapStyle receiveArea::capStyle()
 {
     return areaCapStyle;
 }
-void recieveArea::setCapStyle(Qt::PenCapStyle style)
+void receiveArea::setCapStyle(Qt::PenCapStyle style)
 {
     areaCapStyle = style;
 }
 
-void recieveArea::clearArea()
+void receiveArea::clearArea()
 {
     //replace screen with blank white canvas
     drawImage.fill(qRgb(255, 255, 255));
     update();
 }
 
-void recieveArea::paintEvent(QPaintEvent *event)
+void receiveArea::paintEvent(QPaintEvent *event)
 {
     //initiate editable area
     QPainter paintArea(this);
@@ -73,7 +73,7 @@ void recieveArea::paintEvent(QPaintEvent *event)
     //updates drawImage to edited area
     paintArea.drawImage(newRectangle, drawImage, newRectangle);
 }
-void recieveArea::resizeEvent(QResizeEvent *event)
+void receiveArea::resizeEvent(QResizeEvent *event)
 {
     //if resized window is larger
     if (width() > drawImage.width() || height() > drawImage.height())
@@ -89,7 +89,7 @@ void recieveArea::resizeEvent(QResizeEvent *event)
     QWidget::resizeEvent(event);
 }
 
-void recieveArea::drawLine(const QPoint &endPoint)
+void receiveArea::drawLine(const QPoint &endPoint)
 {
     QPainter painter(&drawImage);
 
@@ -108,7 +108,7 @@ void recieveArea::drawLine(const QPoint &endPoint)
     prevPoint = endPoint;
 }
 
-void recieveArea::resizeImage(QImage *image, const QSize &newSize)
+void receiveArea::resizeImage(QImage *image, const QSize &newSize)
 {
     //if the image size is different
     if (!(image->size() == newSize))

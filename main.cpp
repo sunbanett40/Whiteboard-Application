@@ -7,7 +7,7 @@
 #include <wiringPi.h>
 
 #include "sendwindow.h"
-#include "recievewindow.h"
+#include "receivewindow.h"
 
 
 void* worker(void* thread_id)
@@ -51,12 +51,12 @@ int main(int argc, char *argv[])
     //creating receive window
     QPixmap recievepix(QDir::currentPath() + "/Icons/recieve_icon.png");
 
-    recieveWindow recieve;
-    recieve.setWindowIcon(recievepix);
-    recieve.setWindowTitle("Receive Window");
-    recieve.resize(width/3, height/2);
-    recieve.move(width*5/9, height/4);
-    recieve.show();
+    receiveWindow receive;
+    receive.setWindowIcon(recievepix);
+    receive.setWindowTitle("Receive Window");
+    receive.resize(width/3, height/2);
+    receive.move(width*5/9, height/4);
+    receive.show();
 
     // starting worker thread(s)
     int rc;
