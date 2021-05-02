@@ -17,9 +17,9 @@ queue<T>::queue(int setupSize)
 template <class T>
 void queue<T>::pushToQueue(T const &pushedItem)
 {
-    // Create temporary queue to store items
-    QQueue<T> tempQueue;
-    tempQueue.push(pushedItem);
+    // Create temporary item to store pushed item
+    T tempItem;
+    tempItem = pushedItem;
 
     // Lock the thread so queue can't be modified by other threads
     mutex.lock();
@@ -37,7 +37,7 @@ void queue<T>::pushToQueue(T const &pushedItem)
     }
 
     // Push to queue.
-    serialisedQueue.enqueue(tempQueue.dequeue());
+    serialisedQueue.enqueue(tempItem);
     currentSize++;
 
     // Unlock thread so queue can be accessed again
@@ -68,15 +68,12 @@ bool queue<T>::pullFromQueue(T &pulledItem)
         this->msleep(1);
     }
 
-    // Get item from threadsafe queue and put it to the local queue
+    // Get item from threadsafe queue and write the value
     currentSize--;
-    tempQueue.enqueue(serialisedQueue.dequeue());
+    pulledItem = serialisedQueue.dequeue();
 
     // Unlock thread so queue can be accessed again
     mutex.unlock();
-
-    // Write out the value
-    pulledItem = tempQueue.dequeue();
 
     //Item retrieved successfully
     return true;
