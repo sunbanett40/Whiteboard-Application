@@ -3,10 +3,20 @@
 
 #include <QMainWindow>
 
+#include "recievearea.h"
+
+
 class recieveWindow : public QMainWindow
 {
+    Q_OBJECT
+
 public:
-    recieveWindow();
+    explicit recieveWindow(QWidget *parent = nullptr);
+    ~recieveWindow();
+
+private:
+
+    recieveArea *recieve;
 };
 
 #endif // RECIEVEWINDOW_H

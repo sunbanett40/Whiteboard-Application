@@ -15,13 +15,18 @@ INCLUDEPATH = G:/1204_Advanced_Programming/P20
 
 SOURCES += main.cpp\
         drawarea.cpp \
+        queue.cpp \
+        recievearea.cpp \
         recievewindow.cpp \
         sendwindow.cpp
 
 HEADERS  +=\
         drawarea.h \
+        queue.h \
+        recievearea.h \
         recievewindow.h \
         sendwindow.h \
+        serialstruct.h \
         wiringPi.h
 
 FORMS    +=
