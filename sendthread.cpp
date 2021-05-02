@@ -39,7 +39,7 @@ command sendThread::setSerialStruct(uint8_t op, int penWidth, QColor penColour)
     return serialData;
 }
 
-void sendThread::sendSerialStruct(command serialData)
+void sendThread::pushSerialStruct(command serialData)
 {
     this -> setParityBit(serialData);
     mutex.lock();

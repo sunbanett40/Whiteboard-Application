@@ -19,4 +19,19 @@ typedef struct command
 
 } Command;
 
+enum opcodes
+{
+    sync = 1,
+    clear = 2,
+
+    setPen = 3,
+
+    pressEvent = 4,
+    moveEvent = 5,
+    releaseEvent = 6,
+    paintPixel = 7,
+
+    resize =8
+};
+
 #endif // SERIALSTRUCT_H

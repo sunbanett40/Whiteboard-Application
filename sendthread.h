@@ -15,7 +15,7 @@ public:
     command setSerialStruct(uint8_t op, QPoint pos);
     command setSerialStruct(uint8_t op, int penWidth, QColor penColour);
 
-    void sendSerialStruct(command serialData);
+    void pushSerialStruct(command serialData);
 
 protected:
     void setParityBit(command serialData);
