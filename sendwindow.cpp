@@ -17,11 +17,6 @@
 sendWindow::sendWindow(QWidget *parent, queue<command> *serialQueue)
     : QMainWindow(parent), draw(new drawArea(this))
 {
-    sendThread *worker = new sendThread(serialQueue);
-    worker->moveToThread(&sender);
-    connect(&sender, &QThread::finished, worker, &QObject::deleteLater);
-    connect(this, &sendWindow::sendCommand, worker, &sendThread::pushSerialStruct);
-    sender.start();
 
     setCentralWidget(draw);
 

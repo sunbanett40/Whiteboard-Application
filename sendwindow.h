@@ -1,7 +1,6 @@
 #ifndef SENDWINDOW_H
 #define SENDWINDOW_H
 
-#include <QThread>
 #include <QMainWindow>
 #include "drawarea.h"
 #include "serialstruct.h"
@@ -28,11 +27,7 @@ public slots:
     void penWidth();
     void capStyle();
 
-signals:
-    void sendCommand(const command &serialData);
-
 private:
-    QThread sender;
     drawArea *draw;
 };
 

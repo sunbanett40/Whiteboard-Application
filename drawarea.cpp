@@ -1,12 +1,21 @@
 #include <QMouseEvent>
 #include <QPainter>
 #include <QGuiApplication>
+#include <QThread>
 
+#include "sendthread.h"
 #include "drawarea.h"
 
-drawArea::drawArea(QWidget *parent)
+drawArea::drawArea(QWidget *parent, queue<command> *sQueue)
     : QWidget(parent)
 {
+
+    sendThread *worker = new sendThread(sQueue);
+    worker->moveToThread(&sender);
+    connect(&sender, &QThread::finished, worker, &QObject::deleteLater);
+    connect(this, &drawArea::sendCommand, worker, &sendThread::pushSerialStruct);
+    sender.start();
+
     setAttribute(Qt::WA_StaticContents);
     historyLength = 20;
 }
@@ -39,7 +48,10 @@ bool drawArea::saveArea(const QString &file, const char *format)
     return visibleImage.save(file, format);
 }
 bool drawArea::syncArea()
-{}
+{
+
+
+}
 
 //Regresses the state of the draw area to the previous snapshot (if available).
 void drawArea::undo()

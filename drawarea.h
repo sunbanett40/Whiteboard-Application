@@ -3,13 +3,17 @@
 
 #include <QWidget>
 #include <QList>
+#include <QThread>
+
+#include "queue.h"
+#include "serialstruct.h"
 
 class drawArea : public QWidget
 {
     Q_OBJECT
 
 public:
-    drawArea(QWidget *parent = nullptr);
+    drawArea(QWidget *parent = nullptr, queue<command> *sQueue = nullptr);
 
     bool openArea(const QString &file);
     bool saveArea(const QString &file, const char *format);
@@ -31,6 +35,8 @@ public:
 
 public slots:
     void clearArea();
+signals:
+    void sendCommand(const command &serialData);
 
 protected:
     void mousePressEvent(QMouseEvent *event) override;
@@ -54,6 +60,8 @@ private:
     Qt::PenStyle areaPenStyle = Qt::SolidLine;
     Qt::PenCapStyle areaCapStyle = Qt::SquareCap;
     Qt::BrushStyle areaBrushStyle = Qt::SolidPattern;
+
+    QThread sender;
 };
 
 #endif // RECIEVEAREA_H
