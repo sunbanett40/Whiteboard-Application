@@ -27,7 +27,7 @@ void queue<T>::pushToQueue(T const &pushedItem)
     // Wait until there is space in the queue
     while (currentSize == maxSize)
     {
-        this->msleep(1);
+        this->usleep(1);
     }
 
     // Check that the queue is not closed
@@ -40,6 +40,7 @@ void queue<T>::pushToQueue(T const &pushedItem)
     serialisedQueue.enqueue(tempItem);
     currentSize++;
 
+    this->usleep(10);
     // Unlock thread so queue can be accessed again
     mutex.unlock();
 }

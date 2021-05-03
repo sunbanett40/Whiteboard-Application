@@ -8,7 +8,16 @@ receiveThread::receiveThread()
 }
 
 void receiveThread::pullSerialStruct()
-{}
+{
+    mutex.lock();
+    command pulledItem;
+
+    //serialQueue.pullFromQueue(pulledItem);
+    this ->checkParityBit(pulledItem);
+    mutex.unlock();
+
+    this->readSerialStruct(pulledItem);
+}
 
 void receiveThread::readSerialStruct(command serialData)
 {
@@ -82,4 +91,12 @@ void receiveThread::checkParityBit(command serialData)
     }
     mutex.unlock();
 
+}
+
+void receiveThread::resend()
+{
+    mutex.lock();
+    //serialQueue.pushToQueue(false);
+
+    mutex.unlock();
 }

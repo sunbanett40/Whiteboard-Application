@@ -1,7 +1,7 @@
 #ifndef SENDTHREAD_H
 #define SENDTHREAD_H
 
-#include<QQueue>
+#include <QQueue>
 #include <QMutex>
 #include <QPainter>
 
