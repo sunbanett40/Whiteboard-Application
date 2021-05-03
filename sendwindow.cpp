@@ -13,10 +13,11 @@
 #include "sendwindow.h"
 #include "sendthread.h"
 
-sendWindow::sendWindow(QWidget *parent)
+
+sendWindow::sendWindow(QWidget *parent, queue<command> *serialQueue)
     : QMainWindow(parent), draw(new drawArea(this))
 {
-    sendThread *worker = new sendThread;
+    sendThread *worker = new sendThread(serialQueue);
     worker->moveToThread(&sender);
     connect(&sender, &QThread::finished, worker, &QObject::deleteLater);
     connect(this, &sendWindow::sendCommand, worker, &sendThread::pushSerialStruct);

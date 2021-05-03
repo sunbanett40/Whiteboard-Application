@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
     //creating send window
     QPixmap sendpix(QDir::currentPath() + "/Icons/send_icon.png");
 
-    sendWindow send;
+    sendWindow send(nullptr, &serialQueue);
     send.setWindowIcon(sendpix);
     send.setWindowTitle("Send Window");
     send.resize(width/3, height/2);
@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
     //creating receive window
     QPixmap recievepix(QDir::currentPath() + "/Icons/recieve_icon.png");
 
-    receiveWindow receive;
+    receiveWindow receive(nullptr, &serialQueue);
     receive.setWindowIcon(recievepix);
     receive.setWindowTitle("Receive Window");
     receive.resize(width/3, height/2);

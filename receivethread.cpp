@@ -2,9 +2,9 @@
 
 #include "receivethread.h"
 
-receiveThread::receiveThread()
+receiveThread::receiveThread(queue<command> *sQueue)
 {
-
+    serialQueue = sQueue;
 }
 
 void receiveThread::pullSerialStruct()

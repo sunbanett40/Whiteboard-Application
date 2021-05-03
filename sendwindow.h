@@ -5,13 +5,14 @@
 #include <QMainWindow>
 #include "drawarea.h"
 #include "serialstruct.h"
+#include "queue.h"
 
 class sendWindow : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    explicit sendWindow(QWidget *parent = nullptr);
+    explicit sendWindow(QWidget *parent = nullptr, queue<command> *serialQueue = nullptr);
     void createMenus();
     ~sendWindow();
 

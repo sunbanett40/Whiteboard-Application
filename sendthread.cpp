@@ -2,9 +2,9 @@
 
 #include "sendthread.h"
 
-sendThread::sendThread()
+sendThread::sendThread(queue<command> *sQueue)
 {
-    //serialQueue = &;
+    serialQueue = sQueue;
 }
 
 command sendThread::setSerialStruct(uint8_t op, QPoint pos)

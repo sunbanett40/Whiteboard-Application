@@ -6,13 +6,14 @@
 #include <QPainter>
 
 #include "serialstruct.h"
+#include "queue.h"
 
 class sendThread : public QObject
 {
     Q_OBJECT
 
 public:
-    sendThread();
+    sendThread(queue<command> *sQueue);
 
     command setSerialStruct(uint8_t op, QPoint pos);
     command setSerialStruct(uint8_t op, int penWidth, QColor penColour);
@@ -25,7 +26,7 @@ protected:
 
 private:
     QMutex mutex;
-    //QQueue<command> &serialQueue;
+    queue<command> *serialQueue;
 };
 
 #endif // SENDTHREAD_H

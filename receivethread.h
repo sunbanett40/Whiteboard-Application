@@ -6,6 +6,7 @@
 #include <QPainter>
 
 #include "serialstruct.h"
+#include "queue.h"
 
 class receiveThread : public QObject
 {
@@ -13,7 +14,7 @@ class receiveThread : public QObject
 
 
 public:
-    receiveThread();
+    receiveThread(queue<command> *sQueue);
 
     void pullSerialStruct();
     void readSerialStruct(command serialData);
@@ -30,7 +31,7 @@ protected:
 
 private:
     QMutex mutex;
-    //QQueue<command> &serialQueue;
+    queue<command> *serialQueue;
 };
 
 #endif // RECEIVETHREAD_H
