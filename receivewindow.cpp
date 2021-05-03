@@ -6,16 +6,25 @@
 receiveWindow::receiveWindow(QWidget *parent)
     : QMainWindow(parent), receive(new receiveArea(this))
 {
+    command serialData;
+
     receiveThread *worker = new receiveThread;
-        worker->moveToThread(&receiver);
-        connect(&receiver, &QThread::finished, worker, &QObject::deleteLater);
-        connect(this, &receiveWindow::startPoll, worker, &receiveThread::poll);
-        connect(worker, &receiveThread::pulledItem, this, &receiveWindow::receivedItem);
-        receiver.start();
+    worker->moveToThread(&receiver);
+    connect(&receiver, &QThread::finished, worker, &QObject::deleteLater);
+    connect(this, &receiveWindow::startPoll, worker, &receiveThread::pullSerialStruct);
+    connect(worker, &receiveThread::pulledSerialStruct, this, &receiveWindow::receivedSerialStruct);
+    receiver.start();
 
     setCentralWidget(receive);
 
     qApp->setAttribute(Qt::AA_DontShowIconsInMenus, false);
+
+    startPoll();
 }
 
 receiveWindow::~receiveWindow() = default;
+
+void receiveWindow::receivedSerialStruct(const command &serialData)
+{
+
+}

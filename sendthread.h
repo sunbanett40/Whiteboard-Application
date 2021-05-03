@@ -7,14 +7,17 @@
 
 #include "serialstruct.h"
 
-class sendThread
+class sendThread : public QObject
 {
+    Q_OBJECT
+
 public:
     sendThread();
 
     command setSerialStruct(uint8_t op, QPoint pos);
     command setSerialStruct(uint8_t op, int penWidth, QColor penColour);
 
+public slots:
     void pushSerialStruct(command serialData);
 
 protected:

@@ -8,6 +8,7 @@
 
 #include "sendwindow.h"
 #include "receivewindow.h"
+#include "queue.h"
 
 
 void* worker(void* thread_id)
@@ -37,6 +38,7 @@ int main(int argc, char *argv[])
     int height = screenGeometry.height();
     int width = screenGeometry.width();
 
+    queue<command> serialQueue(40);
 
     //creating send window
     QPixmap sendpix(QDir::currentPath() + "/Icons/send_icon.png");

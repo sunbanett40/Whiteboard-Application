@@ -1,9 +1,10 @@
 #ifndef SENDWINDOW_H
 #define SENDWINDOW_H
 
+#include <QThread>
 #include <QMainWindow>
 #include "drawarea.h"
-
+#include "serialstruct.h"
 
 class sendWindow : public QMainWindow
 {
@@ -11,23 +12,26 @@ class sendWindow : public QMainWindow
 
 public:
     explicit sendWindow(QWidget *parent = nullptr);
-        void createMenus();
+    void createMenus();
     ~sendWindow();
 
 public slots:
-        void open();
-        void saveas();
-        void sync();
+    void open();
+    void saveas();
+    void sync();
 
-        //super special jank undo (c)
-        void undo();
+    //super special jank undo (c)
+    void undo();
 
-        void colour();
-        void penWidth();
-        void capStyle();
+    void colour();
+    void penWidth();
+    void capStyle();
+
+signals:
+    void sendCommand(const command &serialData);
 
 private:
-
+    QThread sender;
     drawArea *draw;
 };
 

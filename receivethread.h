@@ -1,7 +1,7 @@
 #ifndef RECEIVETHREAD_H
 #define RECEIVETHREAD_H
 
-#include<QQueue>
+#include <QQueue>
 #include <QMutex>
 #include <QPainter>
 
@@ -22,7 +22,7 @@ public slots:
     void poll();
 
 signals:
-    void pulledItem(const command &serialData);
+    void pulledSerialStruct(const command &serialData);
 
 protected:
     void checkParityBit(command serialData);

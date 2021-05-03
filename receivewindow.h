@@ -19,7 +19,7 @@ signals:
     void startPoll();
 
 public slots:
-    void receivedItem(const command &serialData);
+    void receivedSerialStruct(const command &serialData);
 
 private:
 

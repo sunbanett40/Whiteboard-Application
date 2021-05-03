@@ -56,7 +56,7 @@ void receiveThread::readSerialStruct(command serialData)
         position.setY(serialData.data2);
 
     default:
-    this -> resend();
+        this -> resend();
     }
 }
 

@@ -23,8 +23,8 @@ command sendThread::setSerialStruct(uint8_t op, int penWidth, QColor penColour)
 {
     uint8_t width = penWidth;
     uint8_t red = penColour.red();
-    uint8_t green = penColour.green();;
-    uint8_t blue = penColour.blue();;
+    uint8_t green = penColour.green();
+    uint8_t blue = penColour.blue();
 
     mutex.lock();
     command serialData;
