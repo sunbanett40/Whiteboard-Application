@@ -5,6 +5,7 @@
 
 #include "sendthread.h"
 #include "drawarea.h"
+#include "serialstruct.h"
 
 drawArea::drawArea(QWidget *parent, queue<command> *sQueue)
     : QWidget(parent)
@@ -49,6 +50,8 @@ bool drawArea::saveArea(const QString &file, const char *format)
 }
 bool drawArea::syncArea()
 {
+    command toSend;
+    toSend.opcode = opcodes::sync;
 
 
 }
