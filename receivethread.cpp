@@ -13,10 +13,10 @@ void receiveThread::pullSerialStruct()
     command pulledItem;
 
     //serialQueue.pullFromQueue(pulledItem);
-    this ->checkParityBit(pulledItem);
+    receiveThread::checkParityBit(pulledItem);
     mutex.unlock();
 
-    this->readSerialStruct(pulledItem);
+    receiveThread::readSerialStruct(pulledItem);
 }
 
 void receiveThread::readSerialStruct(command serialData)
@@ -99,4 +99,9 @@ void receiveThread::resend()
     //serialQueue.pushToQueue(false);
 
     mutex.unlock();
+}
+
+void receiveThread::poll()
+{
+    receiveThread::pullSerialStruct();
 }

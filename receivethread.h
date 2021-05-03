@@ -7,13 +7,22 @@
 
 #include "serialstruct.h"
 
-class receiveThread
+class receiveThread : public QObject
 {
+    Q_OBJECT
+
+
 public:
     receiveThread();
 
     void pullSerialStruct();
     void readSerialStruct(command serialData);
+
+public slots:
+    void poll();
+
+signals:
+    void pulledItem(const command &serialData);
 
 protected:
     void checkParityBit(command serialData);

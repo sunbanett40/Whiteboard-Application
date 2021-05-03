@@ -1,0 +1,191 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% EEE Report Template
+% University of Southampton
+%
+% authors: George Brown (gb4g15)
+%          Rhys Thomas  (rt8g15)
+%
+% edited : 2016/02/05
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[10pt]{article}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% PACKAGES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{multicol} % multiple columns
+\usepackage{fancyhdr} % page number in bottom right
+\usepackage{graphicx} % images
+\usepackage{float} % float image in columns, gives [H]
+\usepackage{amsmath, amssymb} % maths symbols / environments
+\usepackage{times} % times font instead of computer modern
+\usepackage{IEEEtrantools} % et al referencing
+\usepackage{booktabs} % nice replacements for \hline in tables
+\usepackage{calc} % calculating textwidth-2cm etc.
+\usepackage[none]{hyphenat} % no hyphenation
+\usepackage{geometry} % Page Margins
+\usepackage{hyperref} % PDF metadata setup.
+\usepackage{mathptmx} % Use times font face for maths
+\usepackage{caption} % Tighter caption control.
+
+\usepackage{lipsum} % Temporary to generate body text
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% TITLE AND AUTHOR
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% This info is reused in places, so input it here and it will be updated globally.
+\newcommand{\docTitle}{Whiteboard Chat Applictaion with Half-Duplex Communication}
+\newcommand{\docAuthor}{Joesph Butterworth}
+
+% Put the metadata in the PDF output.
+\hypersetup{
+    unicode=true,
+    pdftitle={\docTitle{}},
+    pdfauthor={\docAuthor{}}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% FORMATTING REQUIREMENTS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\geometry{top=2.5cm, bottom=2.5cm, left=2cm, right=2cm}
+\linespread{1.05} % 1.05x line spacing.
+\setlength{\columnsep}{0.7cm} % 0.7cm column spacing.
+\setlength{\multicolsep}{0cm}
+\setlength{\parskip}{6pt} % 6pt skip between paragraphs
+\setlength{\parindent}{0pt}
+\newcommand{\figsquish}{\vspace{-5mm}} % Hack to fix poor figure spacing due to [H]
+
+% Captions
+% Table captions go above, 6pt space, small (9pt) roman font, roman numeral counting.
+\captionsetup[table]{position=above, skip=6pt, font={small, rm}}
+\renewcommand\thetable{\Roman{table}}
+% Figure captions go below, 5pt space, small (9pt) roman font.
+\captionsetup[figure]{position=below, skip=5pt, font={small, rm}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% SECTION REQUIREMENTS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{titlesec}
+\titlelabel{\thetitle.\hspace{0.5cm}} % Dot between number and title on sections.
+% Format is 10pt, so \large = 12pt, \normalsize=10pt
+\titleformat*{\section}{\large\bfseries}
+\titlespacing*{\section}{0cm}{4pt}{4pt} % 6pt from \parindent
+\titleformat*{\subsection}{\normalsize\bfseries}
+\titlespacing*{\subsection}{0cm}{0pt}{0pt} % 6pt from \parindent
+
+% Set up footer.
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\rfoot{\thepage} % page number, bottom right of page
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% DOCUMENT BEGIN
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+% Pull in the IEEE referencing setup stuff.
+\bstctlcite{IEEEexample:BSTcontrol}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% HEADER
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{
+    \centering
+    % Use size 28 font. 1.05x gives 29.4pt line spacing.
+    \fontsize{28pt}{29.4pt} \selectfont
+    \docTitle\\
+    \vspace{25pt}
+    % Name block.
+    \fontsize{11pt}{11.55pt}\selectfont
+    \docAuthor\\
+    \fontsize{10pt}{10.5pt}\selectfont
+    \textit{jdb1g20@soton.ac.uk} \\ % add your email address
+    \textit{MEng Electrical and Electronic Engineering} \\ 
+    \textit{Personal Tutor: Tracy Melvin} \\ % add your personal tutor
+}
+\vspace{25pt}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% ABSTRACT
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{
+\setlength{\tabcolsep}{0cm} % No additional column spacing since we've set it strictly.
+\centering
+\begin{tabular}{p{2cm}p{\textwidth-2cm}}
+    Abstract: &
+    
+\end{tabular}  
+}
+\vspace{25pt}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% BODY
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{multicols*}{2}
+
+\section{Introduction}
+
+\section{Theory}
+\subsection{QPainter}
+How will the send-window allow users to draw diagrams? How will it display
+diagrams as they are being drawn, and how will it retain these diagrams so
+that they don’t disappear when the window is repainted?
+
+\subsection{Threads and Mutexes}
+text
+
+How will you use threads to send and receive these packets, while the rest of
+the application keeps running? How will you use mutexes to make any relevant
+collections “thread-safe”?
+
+\subsection{Serialisation}
+How will you serialize these commands into packets to be sent from the send
+window?
+
+How will you convert binary packets into a stream of 1’s and 0’s? How will you
+transmit this stream in a reliable way? For example, you may need to signal
+when a bit is ready to be read, and when the receive window has finished
+reading the current bit.
+
+\subsection{Simplex, Half-Duplex, and Duplex Communication}
+How will you represent the drawing commands so that they can be sent to the
+other user whilst they are being drawn?
+
+How will you receive and buffer packets at the other end? How will you
+deserialize them? How will you draw them on the receive window? How will
+you retain the currently received diagram so that when the window is
+repainted the diagram isn’t lost?
+
+\section{Implementation}
+\subsection{The GUI and Receive Window}
+text
+
+\subsection{The Serialise and Deserialise Drawing Commands}
+text
+
+\subsection{The Send and Receive Threads}
+text
+
+\subsection{Communication Protocol using Booleans}
+text
+
+\section{Final Application}
+
+\section{Discussion}
+
+\section{Conclusion}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% BIBLIOGRAPHY
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\nocite{*} % show all references even without citation
+% to cite use "bla bla"~\cite{ref_label} -> "bla bla" [1]
+\bibliographystyle{IEEEtran}
+% IEEEabrv abbreviates journal titles in accordance to IEEE standards 
+\bibliography{IEEEabrv,mybib}
+
+\end{multicols*}
+\end{document}
