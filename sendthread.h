@@ -15,9 +15,6 @@ class sendThread : public QObject
 public:
     sendThread(queue<command> *sQueue);
 
-    command setSerialStruct(uint8_t op, QPoint pos);
-    command setSerialStruct(uint8_t op, int penWidth, QColor penColour);
-
 public slots:
     void pushSerialStruct(command serialData);
 

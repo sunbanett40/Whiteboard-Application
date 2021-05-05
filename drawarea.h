@@ -45,6 +45,7 @@ protected:
 
     command setSerialStruct(uint8_t op, QPoint pos);
     command setSerialStruct(uint8_t op, int penWidth, QColor penColour);
+    command setSerialStruct(uint8_t op);
 
 private:
     void drawLine(const QPoint &endPoint);
