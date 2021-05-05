@@ -43,19 +43,11 @@ void sendThread::pushSerialStruct(command serialData)
 {
     this -> setParityBit(serialData);
 
-    /*do
-    {
     mutex.lock();
-    serialQueue.enqueue(serialData);
+    serialQueue->pushToQueue(serialData);
 
     mutex.unlock();
-    }
-    while (serialQueue.pullFromQueue == false)
-    {
-    mutex.lock();
-    serialQueue.enqueue(serialData);
-    mutex.unlock();
-    }*/
+
 }
 
 void sendThread::setParityBit(command serialData)

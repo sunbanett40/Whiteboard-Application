@@ -12,7 +12,7 @@ void receiveThread::pullSerialStruct()
     mutex.lock();
     command pulledItem;
 
-    //serialQueue.pullFromQueue(pulledItem);
+    serialQueue->pullFromQueue(pulledItem);
     receiveThread::checkParityBit(pulledItem);
     mutex.unlock();
 

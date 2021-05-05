@@ -81,17 +81,14 @@ void sendWindow::createMenus()
     //Toolbar
     auto *colour = new QAction("&Colour", this);
     auto *width = new QAction("&Pen Width", this);
-    auto *capS = new QAction("&Cap Style", this);
 
     QToolBar *toolbar = addToolBar("main toolbar");
     toolbar->addAction(colour);
     toolbar->addSeparator();
     toolbar->addAction(width);
-    toolbar->addAction(capS);
 
     connect(colour, &QAction::triggered, this, &sendWindow::colour);
     connect(width, &QAction::triggered, this, &sendWindow::penWidth);
-    connect(capS, &QAction::triggered, this, &sendWindow::capStyle);
 }
 
 void sendWindow::open()
@@ -170,9 +167,5 @@ void sendWindow::capStyle()
     //get pen style
     QString newCapStyle = QInputDialog::getItem(this, tr("Cap Style"), tr("Select cap style:"),
                                                 styleMap.keys(), 1, false, &ok);
-    if (ok)
-    {
-        draw->setCapStyle(styleMap[newCapStyle]);
-    }
 }
 

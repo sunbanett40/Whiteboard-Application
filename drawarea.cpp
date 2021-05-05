@@ -69,6 +69,7 @@ void drawArea::undo()
 
         //Remove the snapshot we just rolled back to.
         history.removeAt(history.count() - 1);
+
     }
 }
 
@@ -79,6 +80,8 @@ QColor drawArea::penColour()
 void drawArea::setColour(const QColor &colour)
 {
     areaColour = colour;
+    command sendItem = drawArea::setSerialStruct(opcodes::setPen, drawArea::penWidth(), drawArea::penColour());
+    emit sendCommand(sendItem);
 }
 int drawArea::penWidth()
 {
@@ -87,14 +90,8 @@ int drawArea::penWidth()
 void drawArea::setPenWidth(int width)
 {
     areaPenWidth = width;
-}
-Qt::PenCapStyle drawArea::capStyle()
-{
-    return areaCapStyle;
-}
-void drawArea::setCapStyle(Qt::PenCapStyle style)
-{
-    areaCapStyle = style;
+    command sendItem = drawArea::setSerialStruct(opcodes::setPen, drawArea::penWidth(), drawArea::penColour());
+    emit sendCommand(sendItem);
 }
 
 void drawArea::clearArea()
@@ -201,4 +198,33 @@ void drawArea::resizeImage(QImage *image, const QSize &newSize)
         //return new image
         *image = newImage;
     }
+}
+
+command drawArea::setSerialStruct(uint8_t op, QPoint pos)
+{
+    command serialData;
+    serialData.opcode = op;
+    serialData.data1 = pos.x();
+    serialData.data2 = pos.y();
+
+    return serialData;
+}
+
+command drawArea::setSerialStruct(uint8_t op, int penWidth, QColor penColour)
+{
+    uint8_t width = penWidth;
+    uint8_t red = penColour.red();
+    uint8_t green = penColour.green();
+    uint8_t blue = penColour.blue();
+
+
+    command serialData;
+    serialData.opcode = op;
+
+    // Combine information into the two data bits
+    //https://stackoverflow.com/questions/15249791/combining-two-uint8-t-as-uint16-t
+    serialData.data1 = (width << 8) | red;
+    serialData.data2 = (green << 8) | blue;
+
+    return serialData;
 }

@@ -25,9 +25,6 @@ public:
 
     int penWidth();
     void setPenWidth(int width);
-
-    Qt::PenCapStyle capStyle();
-    void setCapStyle(Qt::PenCapStyle style);
     
     //history of edits on the board
     QList<QImage> history;
@@ -45,6 +42,9 @@ protected:
 
     void paintEvent(QPaintEvent *event) override;
     void resizeEvent(QResizeEvent *event) override;
+
+    command setSerialStruct(uint8_t op, QPoint pos);
+    command setSerialStruct(uint8_t op, int penWidth, QColor penColour);
 
 private:
     void drawLine(const QPoint &endPoint);
