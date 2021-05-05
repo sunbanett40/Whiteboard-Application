@@ -34,6 +34,7 @@ public slots:
     void clearArea();
 signals:
     void sendCommand(const command &serialData);
+    void sendImage(QImage sendImage);
 
 protected:
     void mousePressEvent(QMouseEvent *event) override;

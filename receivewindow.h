@@ -16,6 +16,8 @@ public:
     explicit receiveWindow(QWidget *parent = nullptr, queue<command> *sQueue = nullptr);
     ~receiveWindow();
 
+    receiveArea *receive;
+
 signals:
     void startPoll();
 
@@ -25,7 +27,7 @@ public slots:
 private:
 
     QThread receiver;
-    receiveArea *receive;
+
 };
 
 #endif // RECEIVEWINDOW_H

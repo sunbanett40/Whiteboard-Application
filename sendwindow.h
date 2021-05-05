@@ -15,6 +15,8 @@ public:
     void createMenus();
     ~sendWindow();
 
+        drawArea *draw;
+
 public slots:
     void open();
     void saveas();
@@ -28,7 +30,7 @@ public slots:
     void capStyle();
 
 private:
-    drawArea *draw;
+
 };
 
 #endif // SENDWINDOW_H

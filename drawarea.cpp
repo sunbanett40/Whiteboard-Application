@@ -37,6 +37,8 @@ bool drawArea::openArea(const QString &file)
         return true;
     }
 
+    emit sendImage(drawImage);
+
     return false;
 }
 bool drawArea::saveArea(const QString &file, const char *format)
@@ -52,7 +54,7 @@ bool drawArea::syncArea()
 {
     command toSend;
     toSend.opcode = opcodes::sync;
-
+    emit sendImage(drawImage);
 
 }
 
@@ -70,6 +72,7 @@ void drawArea::undo()
         // Remove the snapshot we just rolled back to.
         history.removeAt(history.count() - 1);
 
+    emit sendImage(drawImage);
     }
 }
 
@@ -103,6 +106,7 @@ void drawArea::clearArea()
     // Send draw information to receive window
     command sendItem = drawArea::setSerialStruct(opcodes::clear);
     emit sendCommand(sendItem);
+    emit sendImage(drawImage);
 }
 
 void drawArea::mousePressEvent(QMouseEvent *event)
@@ -125,6 +129,7 @@ void drawArea::mousePressEvent(QMouseEvent *event)
     // Send draw information to receive window
     command sendItem = drawArea::setSerialStruct(opcodes::pressEvent, event->pos());
     emit sendCommand(sendItem);
+    emit sendImage(drawImage);
 }
 void drawArea::mouseMoveEvent(QMouseEvent *event)
 {
@@ -137,6 +142,7 @@ void drawArea::mouseMoveEvent(QMouseEvent *event)
         // Send draw information to receive window
         command sendItem = drawArea::setSerialStruct(opcodes::moveEvent, event->pos());
         emit sendCommand(sendItem);
+        emit sendImage(drawImage);
     }
 }
 void drawArea::mouseReleaseEvent(QMouseEvent *event)
@@ -150,6 +156,7 @@ void drawArea::mouseReleaseEvent(QMouseEvent *event)
         // Send draw information to receive window
         command sendItem = drawArea::setSerialStruct(opcodes::releaseEvent, event->pos());
         emit sendCommand(sendItem);
+        emit sendImage(drawImage);
 
         drawing = false;
     }

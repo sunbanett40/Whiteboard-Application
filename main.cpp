@@ -5,6 +5,7 @@
 #include <QDir>
 #include <pthread.h>
 #include <wiringPi.h>
+#include <QObject>
 
 #include "sendwindow.h"
 #include "receivewindow.h"
@@ -59,6 +60,8 @@ int main(int argc, char *argv[])
     receive.resize(width/3, height/2);
     receive.move(width*5/9, height/4);
     receive.show();
+
+    QObject::connect(send.draw, SIGNAL(sendImage(QImage)), receive.receive, SLOT(receiveImage(QImage)));
 
     // starting worker thread(s)
     int rc;
