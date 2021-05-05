@@ -13,6 +13,17 @@ receiveArea::receiveArea(QWidget *parent)
 
 receiveArea::~receiveArea() = default;
 
+void receiveArea::receiveImage(QImage receivedImage)
+{
+    QSize newSize = receivedImage.size().expandedTo(size());
+    resizeImage(&receivedImage, newSize);
+
+    //set image to loaded image
+    drawImage = receivedImage;
+    update();
+}
+
+
 void receiveArea::syncArea()
 {}
 
@@ -51,10 +62,6 @@ void receiveArea::setPenWidth(int width)
 Qt::PenCapStyle receiveArea::capStyle()
 {
     return areaCapStyle;
-}
-void receiveArea::setCapStyle(Qt::PenCapStyle style)
-{
-    areaCapStyle = style;
 }
 
 void receiveArea::clearArea()

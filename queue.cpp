@@ -27,7 +27,7 @@ void queue<T>::pushToQueue(T const &pushedItem)
     // Wait until there is space in the queue
     while (currentSize == maxSize)
     {
-        this->msleep(1);
+        //usleep(1);
     }
 
     // Check that the queue is not closed
@@ -40,6 +40,9 @@ void queue<T>::pushToQueue(T const &pushedItem)
     serialisedQueue.enqueue(tempItem);
     currentSize++;
 
+    qDebug() << "Pushed to Queue";
+
+    //usleep(10);
     // Unlock thread so queue can be accessed again
     mutex.unlock();
 }
@@ -56,16 +59,16 @@ bool queue<T>::pullFromQueue(T &pulledItem)
     mutex.lock();
 
     // If the queue is empty and closed we cannot return anything
-    if ((serialisedQueue.head() == nullptr) && (isOpen == false))
+    if (serialisedQueue.isEmpty() && (isOpen == false))
     {
         //No item to retrieve
         return false;
     }
 
     // If there is no item then we wait until there is one
-    while ((serialisedQueue.head() == nullptr) && (isOpen == true))
+    while (serialisedQueue.isEmpty() && (isOpen == true))
     {
-        this->msleep(1);
+        //msleep(1);
     }
 
     // Get item from threadsafe queue and write the value

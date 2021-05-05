@@ -3,13 +3,17 @@
 
 #include <QWidget>
 #include <QList>
+#include <QThread>
+
+#include "queue.h"
+#include "serialstruct.h"
 
 class drawArea : public QWidget
 {
     Q_OBJECT
 
 public:
-    drawArea(QWidget *parent = nullptr);
+    drawArea(QWidget *parent = nullptr, queue<command> *sQueue = nullptr);
 
     bool openArea(const QString &file);
     bool saveArea(const QString &file, const char *format);
@@ -21,9 +25,6 @@ public:
 
     int penWidth();
     void setPenWidth(int width);
-
-    Qt::PenCapStyle capStyle();
-    void setCapStyle(Qt::PenCapStyle style);
     
     //history of edits on the board
     QList<QImage> history;
@@ -31,6 +32,9 @@ public:
 
 public slots:
     void clearArea();
+signals:
+    void sendCommand(const command &serialData);
+    void sendImage(QImage sendImage);
 
 protected:
     void mousePressEvent(QMouseEvent *event) override;
@@ -39,6 +43,10 @@ protected:
 
     void paintEvent(QPaintEvent *event) override;
     void resizeEvent(QResizeEvent *event) override;
+
+    command setSerialStruct(uint8_t op, QPoint pos);
+    command setSerialStruct(uint8_t op, int penWidth, QColor penColour);
+    command setSerialStruct(uint8_t op);
 
 private:
     void drawLine(const QPoint &endPoint);
@@ -54,6 +62,8 @@ private:
     Qt::PenStyle areaPenStyle = Qt::SolidLine;
     Qt::PenCapStyle areaCapStyle = Qt::SquareCap;
     Qt::BrushStyle areaBrushStyle = Qt::SolidPattern;
+
+    QThread sender;
 };
 
 #endif // RECIEVEAREA_H

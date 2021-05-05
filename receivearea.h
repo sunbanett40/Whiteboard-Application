@@ -28,7 +28,9 @@ public slots:
 
     void setColour(const QColor &colour);
     void setPenWidth(int width);
-    void setCapStyle(Qt::PenCapStyle style);
+
+public slots:
+    void receiveImage(QImage receivedImage);
 
 protected:
     void paintEvent(QPaintEvent *event) override;

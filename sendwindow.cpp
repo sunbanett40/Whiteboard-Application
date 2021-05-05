@@ -11,10 +11,13 @@
 #include <QImageWriter>
 
 #include "sendwindow.h"
+#include "sendthread.h"
 
-sendWindow::sendWindow(QWidget *parent)
+
+sendWindow::sendWindow(QWidget *parent, queue<command> *serialQueue)
     : QMainWindow(parent), draw(new drawArea(this))
 {
+
     setCentralWidget(draw);
 
     sendWindow::createMenus();
@@ -27,76 +30,73 @@ sendWindow::~sendWindow() = default;
 void sendWindow::createMenus()
 {
     //File Menu
-     QPixmap openpix(QDir::currentPath() + "/Icons/open.png");
-     auto *open = new QAction(openpix, "&Open", this);
-     open->setShortcut(tr("CTRL+O"));
+    QPixmap openpix(QDir::currentPath() + "/Icons/open.png");
+    auto *open = new QAction(openpix, "&Open", this);
+    open->setShortcut(tr("CTRL+O"));
 
-     QPixmap saveaspix(QDir::currentPath() + "/Icons/save_as.png");
-     auto *saveas = new QAction(saveaspix, "&Save", this);
-     saveas->setShortcut(tr("CTRL+S"));
+    QPixmap saveaspix(QDir::currentPath() + "/Icons/save_as.png");
+    auto *saveas = new QAction(saveaspix, "&Save", this);
+    saveas->setShortcut(tr("CTRL+S"));
 
-     QPixmap quitpix(QDir::currentPath() + "/Icons/quit.png");
-     auto *quit = new QAction(quitpix, "&Quit", this);
-     quit->setShortcut(tr("ALT+F4"));
+    QPixmap quitpix(QDir::currentPath() + "/Icons/quit.png");
+    auto *quit = new QAction(quitpix, "&Quit", this);
+    quit->setShortcut(tr("ALT+F4"));
 
-     QMenu *file = menuBar()->addMenu("&File");
-     file->addAction(open);
-     file->addAction(saveas);
-     file->addSeparator();
-     file->addAction(quit);
+    QMenu *file = menuBar()->addMenu("&File");
+    file->addAction(open);
+    file->addAction(saveas);
+    file->addSeparator();
+    file->addAction(quit);
 
-     connect(open, &QAction::triggered, this, &sendWindow::open);
-     connect(saveas, &QAction::triggered, this, &sendWindow::saveas);
-     connect(quit, &QAction::triggered, qApp, &QApplication::quit);
+    connect(open, &QAction::triggered, this, &sendWindow::open);
+    connect(saveas, &QAction::triggered, this, &sendWindow::saveas);
+    connect(quit, &QAction::triggered, qApp, &QApplication::quit);
 
-     //Edit Menu
-     QPixmap undopix(QDir::currentPath() + "/Icons/undo.png");
-     auto *undo = new QAction(undopix, "&Undo", this);
-     undo->setShortcut(tr("CTRL+Z"));
+    //Edit Menu
+    QPixmap undopix(QDir::currentPath() + "/Icons/undo.png");
+    auto *undo = new QAction(undopix, "&Undo", this);
+    undo->setShortcut(tr("CTRL+Z"));
 
-     QMenu *edit = menuBar()->addMenu("&Edit");
-     edit->addAction(undo);
+    QMenu *edit = menuBar()->addMenu("&Edit");
+    edit->addAction(undo);
 
-     connect(undo, &QAction::triggered, this, &sendWindow::undo);
+    connect(undo, &QAction::triggered, this, &sendWindow::undo);
 
-     //Board Menu
-     QPixmap syncpix(QDir::currentPath() + "/Icons/sync.png");
-     auto *sync = new QAction(syncpix, "&Sync", this);
-     sync->setShortcut(tr("F5"));
+    //Board Menu
+    QPixmap syncpix(QDir::currentPath() + "/Icons/sync.png");
+    auto *sync = new QAction(syncpix, "&Sync", this);
+    sync->setShortcut(tr("F5"));
 
-     QPixmap clearpix(QDir::currentPath() + "/Icons/clear.png");
-     auto *clear = new QAction(clearpix, "&Clear", this);
-     clear->setShortcut(tr("CTRL+N"));
+    QPixmap clearpix(QDir::currentPath() + "/Icons/clear.png");
+    auto *clear = new QAction(clearpix, "&Clear", this);
+    clear->setShortcut(tr("CTRL+N"));
 
-     QMenu *board = menuBar()->addMenu("&Board");
-     board->addAction(sync);
-     board->addAction(clear);
+    QMenu *board = menuBar()->addMenu("&Board");
+    board->addAction(sync);
+    board->addAction(clear);
 
-     connect(open, &QAction::triggered, this, &sendWindow::sync);
-     connect(clear, &QAction::triggered, draw, &drawArea::clearArea);
+    connect(open, &QAction::triggered, this, &sendWindow::sync);
+    connect(clear, &QAction::triggered, draw, &drawArea::clearArea);
 
-     //Toolbar
-     auto *colour = new QAction("&Colour", this);
-     auto *width = new QAction("&Pen Width", this);
-     auto *capS = new QAction("&Cap Style", this);
+    //Toolbar
+    auto *colour = new QAction("&Colour", this);
+    auto *width = new QAction("&Pen Width", this);
 
-     QToolBar *toolbar = addToolBar("main toolbar");
-     toolbar->addAction(colour);
-     toolbar->addSeparator();
-     toolbar->addAction(width);
-     toolbar->addAction(capS);
+    QToolBar *toolbar = addToolBar("main toolbar");
+    toolbar->addAction(colour);
+    toolbar->addSeparator();
+    toolbar->addAction(width);
 
-     connect(colour, &QAction::triggered, this, &sendWindow::colour);
-     connect(width, &QAction::triggered, this, &sendWindow::penWidth);
-     connect(capS, &QAction::triggered, this, &sendWindow::capStyle);
+    connect(colour, &QAction::triggered, this, &sendWindow::colour);
+    connect(width, &QAction::triggered, this, &sendWindow::penWidth);
 }
 
 void sendWindow::open()
 {
-        QString fileName = QFileDialog::getOpenFileName(this,
-                                   tr("Open File"), QDir::currentPath());
-        if (!fileName.isEmpty())
-            draw->openArea(fileName);
+    QString fileName = QFileDialog::getOpenFileName(this,
+                                                    tr("Open File"), QDir::currentPath());
+    if (!fileName.isEmpty())
+        draw->openArea(fileName);
 }
 
 //jank undo
@@ -166,10 +166,6 @@ void sendWindow::capStyle()
 
     //get pen style
     QString newCapStyle = QInputDialog::getItem(this, tr("Cap Style"), tr("Select cap style:"),
-                                        styleMap.keys(), 1, false, &ok);
-    if (ok)
-    {
-        draw->setCapStyle(styleMap[newCapStyle]);
-    }
+                                                styleMap.keys(), 1, false, &ok);
 }
 

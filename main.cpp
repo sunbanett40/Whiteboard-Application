@@ -5,9 +5,11 @@
 #include <QDir>
 #include <pthread.h>
 #include <wiringPi.h>
+#include <QObject>
 
 #include "sendwindow.h"
 #include "receivewindow.h"
+#include "queue.h"
 
 
 void* worker(void* thread_id)
@@ -37,11 +39,12 @@ int main(int argc, char *argv[])
     int height = screenGeometry.height();
     int width = screenGeometry.width();
 
+    queue<command> serialQueue(40);
 
     //creating send window
     QPixmap sendpix(QDir::currentPath() + "/Icons/send_icon.png");
 
-    sendWindow send;
+    sendWindow send(nullptr, &serialQueue);
     send.setWindowIcon(sendpix);
     send.setWindowTitle("Send Window");
     send.resize(width/3, height/2);
@@ -51,12 +54,14 @@ int main(int argc, char *argv[])
     //creating receive window
     QPixmap recievepix(QDir::currentPath() + "/Icons/recieve_icon.png");
 
-    receiveWindow receive;
+    receiveWindow receive(nullptr, &serialQueue);
     receive.setWindowIcon(recievepix);
     receive.setWindowTitle("Receive Window");
     receive.resize(width/3, height/2);
     receive.move(width*5/9, height/4);
     receive.show();
+
+    QObject::connect(send.draw, SIGNAL(sendImage(QImage)), receive.receive, SLOT(receiveImage(QImage)));
 
     // starting worker thread(s)
     int rc;

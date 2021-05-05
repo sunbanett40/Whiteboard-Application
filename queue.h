@@ -4,11 +4,13 @@
 #include <QQueue>
 #include <QMutex>
 
+#include "serialstruct.h"
+
 template <class T>
 class queue
 {
 public:
-    explicit queue(int setupSize);
+    queue(int setupSize);
 
     void pushToQueue(T const &pushedItem);
     bool pullFromQueue(T &pulledItem);
@@ -27,5 +29,7 @@ private:
     QQueue<T> serialisedQueue;
 
 };
+
+template class queue<command>;
 
 #endif // QUEUE_H
