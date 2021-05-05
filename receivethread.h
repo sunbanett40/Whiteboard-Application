@@ -16,14 +16,13 @@ class receiveThread : public QObject
 public:
     receiveThread(queue<command> *sQueue);
 
-    void pullSerialStruct();
     void readSerialStruct(command serialData);
 
 public slots:
-    void poll();
+    void receiveThreadSlot(QImage serialData);
 
 signals:
-    void pulledSerialStruct(const command &serialData);
+    void receiveThreadSignal(QImage serialData);
 
 protected:
     void checkParityBit(command serialData);

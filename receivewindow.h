@@ -22,11 +22,9 @@ signals:
     void startPoll();
 
 public slots:
-    void receivedSerialStruct(const command &serialData);
+    void receivedSerialStruct(QImage serialData);
 
 private:
-
-    QThread receiver;
 
 };
 

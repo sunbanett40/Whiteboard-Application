@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
     int height = screenGeometry.height();
     int width = screenGeometry.width();
 
-    queue<command> serialQueue(40);
+    queue<command> serialQueue(1000);
 
     //creating send window
     QPixmap sendpix(QDir::currentPath() + "/Icons/send_icon.png");
@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
     receive.move(width*5/9, height/4);
     receive.show();
 
-    QObject::connect(send.draw, SIGNAL(sendImage(QImage)), receive.receive, SLOT(receiveImage(QImage)));
+    QObject::connect(&send.draw->sender, SIGNAL(sendThreadSignal(QImage)), &receive.receive->receiver, SLOT(receiveThreadSlot(QImage)));
 
     // starting worker thread(s)
     int rc;

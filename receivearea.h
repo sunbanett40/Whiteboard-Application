@@ -3,13 +3,17 @@
 
 #include <QWidget>
 #include <QList>
+#include <QThread>
+
+#include "queue.h"
+#include "serialstruct.h"
 
 class receiveArea : public QWidget
 {
     Q_OBJECT
 
 public:
-    receiveArea(QWidget *parent = nullptr);
+    receiveArea(QWidget *parent = nullptr, queue<command> *sQueue = nullptr);
     ~receiveArea();
 
     QColor penColour();
@@ -21,6 +25,8 @@ public:
     QList<QImage> history;
     int historyLength;
 
+    QThread receiver;
+
 public slots:
     void syncArea();
     void clearArea();
@@ -30,7 +36,7 @@ public slots:
     void setPenWidth(int width);
 
 public slots:
-    void receiveImage(QImage receivedImage);
+    void receiveAreaSlot(QImage receivedImage);
 
 protected:
     void paintEvent(QPaintEvent *event) override;

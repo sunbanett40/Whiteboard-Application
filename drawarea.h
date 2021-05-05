@@ -30,11 +30,13 @@ public:
     QList<QImage> history;
     int historyLength;
 
+    QThread sender;
+
 public slots:
     void clearArea();
 signals:
-    void sendCommand(const command &serialData);
-    void sendImage(QImage sendImage);
+    void sendCommand(QImage serialData);
+
 
 protected:
     void mousePressEvent(QMouseEvent *event) override;
@@ -63,7 +65,7 @@ private:
     Qt::PenCapStyle areaCapStyle = Qt::SquareCap;
     Qt::BrushStyle areaBrushStyle = Qt::SolidPattern;
 
-    QThread sender;
+
 };
 
 #endif // RECIEVEAREA_H

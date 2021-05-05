@@ -1,4 +1,6 @@
 #include<cmath>
+#include <QImage>
+#include <QDebug>
 
 #include "receivethread.h"
 
@@ -7,16 +9,20 @@ receiveThread::receiveThread(queue<command> *sQueue)
     serialQueue = sQueue;
 }
 
-void receiveThread::pullSerialStruct()
+void receiveThread::receiveThreadSlot(QImage serialData)
 {
+    /*
     mutex.lock();
-    command pulledItem;
+    QImage pulledItem;
 
     serialQueue->pullFromQueue(pulledItem);
-    receiveThread::checkParityBit(pulledItem);
     mutex.unlock();
 
-    receiveThread::readSerialStruct(pulledItem);
+    emit receiveThreadSignal(pulledItem);
+    */
+
+    qDebug() << "receiveThread slot working";
+    emit receiveThreadSignal(serialData);
 }
 
 void receiveThread::readSerialStruct(command serialData)
@@ -101,7 +107,4 @@ void receiveThread::resend()
     mutex.unlock();
 }
 
-void receiveThread::poll()
-{
-    receiveThread::pullSerialStruct();
-}
+

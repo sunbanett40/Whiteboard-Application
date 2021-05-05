@@ -15,7 +15,7 @@ public:
     void createMenus();
     ~sendWindow();
 
-        drawArea *draw;
+    drawArea *draw;
 
 public slots:
     void open();

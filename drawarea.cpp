@@ -14,7 +14,7 @@ drawArea::drawArea(QWidget *parent, queue<command> *sQueue)
     sendThread *worker = new sendThread(sQueue);
     worker->moveToThread(&sender);
     connect(&sender, &QThread::finished, worker, &QObject::deleteLater);
-    connect(this, &drawArea::sendCommand, worker, &sendThread::pushSerialStruct);
+    connect(this, SIGNAL(sendCommand(QImage)), worker, SLOT(pushSerialStruct(QImage)));
     sender.start();
 
     setAttribute(Qt::WA_StaticContents);
@@ -37,7 +37,7 @@ bool drawArea::openArea(const QString &file)
         return true;
     }
 
-    emit sendImage(drawImage);
+    emit sendCommand(drawImage);
 
     return false;
 }
@@ -54,7 +54,7 @@ bool drawArea::syncArea()
 {
     command toSend;
     toSend.opcode = opcodes::sync;
-    emit sendImage(drawImage);
+    emit sendCommand(drawImage);
 
 }
 
@@ -72,7 +72,7 @@ void drawArea::undo()
         // Remove the snapshot we just rolled back to.
         history.removeAt(history.count() - 1);
 
-    emit sendImage(drawImage);
+        emit sendCommand(drawImage);
     }
 }
 
@@ -84,7 +84,6 @@ void drawArea::setColour(const QColor &colour)
 {
     areaColour = colour;
     command sendItem = drawArea::setSerialStruct(opcodes::setPen, drawArea::penWidth(), drawArea::penColour());
-    emit sendCommand(sendItem);
 }
 int drawArea::penWidth()
 {
@@ -94,7 +93,6 @@ void drawArea::setPenWidth(int width)
 {
     areaPenWidth = width;
     command sendItem = drawArea::setSerialStruct(opcodes::setPen, drawArea::penWidth(), drawArea::penColour());
-    emit sendCommand(sendItem);
 }
 
 void drawArea::clearArea()
@@ -105,8 +103,7 @@ void drawArea::clearArea()
 
     // Send draw information to receive window
     command sendItem = drawArea::setSerialStruct(opcodes::clear);
-    emit sendCommand(sendItem);
-    emit sendImage(drawImage);
+    emit sendCommand(drawImage);
 }
 
 void drawArea::mousePressEvent(QMouseEvent *event)
@@ -128,8 +125,7 @@ void drawArea::mousePressEvent(QMouseEvent *event)
 
     // Send draw information to receive window
     command sendItem = drawArea::setSerialStruct(opcodes::pressEvent, event->pos());
-    emit sendCommand(sendItem);
-    emit sendImage(drawImage);
+    emit sendCommand(drawImage);
 }
 void drawArea::mouseMoveEvent(QMouseEvent *event)
 {
@@ -141,8 +137,7 @@ void drawArea::mouseMoveEvent(QMouseEvent *event)
 
         // Send draw information to receive window
         command sendItem = drawArea::setSerialStruct(opcodes::moveEvent, event->pos());
-        emit sendCommand(sendItem);
-        emit sendImage(drawImage);
+        emit sendCommand(drawImage);
     }
 }
 void drawArea::mouseReleaseEvent(QMouseEvent *event)
@@ -155,8 +150,7 @@ void drawArea::mouseReleaseEvent(QMouseEvent *event)
 
         // Send draw information to receive window
         command sendItem = drawArea::setSerialStruct(opcodes::releaseEvent, event->pos());
-        emit sendCommand(sendItem);
-        emit sendImage(drawImage);
+        emit sendCommand(drawImage);
 
         drawing = false;
     }

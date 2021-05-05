@@ -1,20 +1,29 @@
 #include <QMouseEvent>
 #include <QPainter>
 #include <QGuiApplication>
+#include <QDebug>
 
 #include "receivearea.h"
+#include "receivethread.h"
 
-receiveArea::receiveArea(QWidget *parent)
+receiveArea::receiveArea(QWidget *parent, queue<command> *sQueue)
     : QWidget(parent)
 {
+    receiveThread *worker = new receiveThread(sQueue);
+    worker->moveToThread(&receiver);
+    connect(&receiver, &QThread::finished, worker, &QObject::deleteLater);
+    connect(&receiver, SIGNAL(receiveThreadSignal(QImage)), this, SLOT(receiveAreaSlot(QImage)));
+    receiver.start();
+
     setAttribute(Qt::WA_StaticContents);
     historyLength = 20;
 }
 
 receiveArea::~receiveArea() = default;
 
-void receiveArea::receiveImage(QImage receivedImage)
+void receiveArea::receiveAreaSlot(QImage receivedImage)
 {
+    qDebug() << "receiveArea slot working";
     QSize newSize = receivedImage.size().expandedTo(size());
     resizeImage(&receivedImage, newSize);
 

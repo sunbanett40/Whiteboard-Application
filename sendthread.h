@@ -15,8 +15,11 @@ class sendThread : public QObject
 public:
     sendThread(queue<command> *sQueue);
 
+signals:
+    void sendThreadSignal(QImage sendImage);
+
 public slots:
-    void pushSerialStruct(command serialData);
+    void pushSerialStruct(QImage serialData);
 
 protected:
     void setParityBit(command serialData);

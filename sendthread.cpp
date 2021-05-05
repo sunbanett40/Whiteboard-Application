@@ -1,4 +1,5 @@
 #include <cmath>
+#include <QDebug>
 
 #include "sendthread.h"
 
@@ -7,14 +8,16 @@ sendThread::sendThread(queue<command> *sQueue)
     serialQueue = sQueue;
 }
 
-void sendThread::pushSerialStruct(command serialData)
+void sendThread::pushSerialStruct(QImage serialData)
 {
-    this -> setParityBit(serialData);
-
+    /*
     mutex.lock();
     serialQueue->pushToQueue(serialData);
 
     mutex.unlock();
+    */
+    qDebug() << "sendThread slot working";
+    emit sendThreadSignal(serialData);
 
 }
 

@@ -3,6 +3,7 @@
 
 #include <QQueue>
 #include <QMutex>
+#include <QImage>
 
 #include "serialstruct.h"
 
