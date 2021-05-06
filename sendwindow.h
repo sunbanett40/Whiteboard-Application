@@ -1,3 +1,10 @@
+/*
+Project:    Whiteboard Chat Application - P20 Qt Project
+Author:     Joseph Butterworth
+License:    This work is licensed under the Creative Commons Attribution-ShareAlike License.
+            View this license at https://creativecommons.org/licenses/
+*/
+
 #ifndef SENDWINDOW_H
 #define SENDWINDOW_H
 
@@ -5,17 +12,19 @@
 #include "drawarea.h"
 #include "serialstruct.h"
 #include "queue.h"
+#include "drawinformation.h"
 
 class sendWindow : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    explicit sendWindow(QWidget *parent = nullptr, queue<command> *serialQueue = nullptr);
-    void createMenus();
+    explicit sendWindow(QWidget *parent = nullptr);
     ~sendWindow();
 
-        drawArea *draw;
+    void createMenus();
+
+    sendCanvas *canvas;
 
 public slots:
     void open();
@@ -27,7 +36,6 @@ public slots:
 
     void colour();
     void penWidth();
-    void capStyle();
 
 private:
 

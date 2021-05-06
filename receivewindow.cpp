@@ -3,9 +3,10 @@
 #include "receivewindow.h"
 #include "receivethread.h"
 
-receiveWindow::receiveWindow(QWidget *parent, queue<command> *sQueue)
+receiveWindow::receiveWindow(QWidget *parent)
     : QMainWindow(parent), receive(new receiveArea(this))
 {
+/*
     command serialData;
 
     receiveThread *worker = new receiveThread(sQueue);
@@ -14,7 +15,7 @@ receiveWindow::receiveWindow(QWidget *parent, queue<command> *sQueue)
     connect(this, &receiveWindow::startPoll, worker, &receiveThread::pullSerialStruct);
     connect(worker, &receiveThread::pulledSerialStruct, this, &receiveWindow::receivedSerialStruct);
     receiver.start();
-
+*/
     setCentralWidget(receive);
 
     qApp->setAttribute(Qt::AA_DontShowIconsInMenus, false);

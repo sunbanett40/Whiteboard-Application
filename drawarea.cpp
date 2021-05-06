@@ -1,121 +1,125 @@
-#include <QMouseEvent>
+/*
+Project:    Whiteboard Chat Application - P20 Qt Project
+Author:     Joseph Butterworth
+License:    This work is licensed under the Creative Commons Attribution-ShareAlike License.
+            View this license at https://creativecommons.org/licenses/
+*/
+
 #include <QPainter>
-#include <QGuiApplication>
-#include <QThread>
+#include <QPen>
+#include <QMouseEvent>
 
 #include "sendthread.h"
 #include "drawarea.h"
 #include "serialstruct.h"
 
-drawArea::drawArea(QWidget *parent, queue<command> *sQueue)
+sendCanvas::sendCanvas(QWidget *parent, queue<command> *sQueue)
     : QWidget(parent)
 {
-
+    /*
     sendThread *worker = new sendThread(sQueue);
     worker->moveToThread(&sender);
     connect(&sender, &QThread::finished, worker, &QObject::deleteLater);
     connect(this, &drawArea::sendCommand, worker, &sendThread::pushSerialStruct);
     sender.start();
+    */
 
     setAttribute(Qt::WA_StaticContents);
-    historyLength = 20;
 }
 
-bool drawArea::openArea(const QString &file)
+bool sendCanvas::openArea(const QString &file)
 {
     QImage loadImage;
 
-    //load a new image
+    // Load a new image
     if (loadImage.load(file))
     {
         QSize newSize = loadImage.size().expandedTo(size());
         resizeImage(&loadImage, newSize);
 
-        //set image to loaded image
+        // Set canvas image to loaded image
         drawImage = loadImage;
         update();
+
+        // Tell receiveWindow to do the same
+        emit syncSignal(loadImage);
+
         return true;
     }
 
-    emit sendImage(drawImage);
-
     return false;
 }
-bool drawArea::saveArea(const QString &file, const char *format)
+bool sendCanvas::saveArea(const QString &file, const char *format)
 {
-    //create image and size appropriately
+    // Create image and size appropriately
     QImage visibleImage = drawImage;
     resizeImage(&visibleImage, size());
 
-    //save file
+    // Save file
     return visibleImage.save(file, format);
 }
-bool drawArea::syncArea()
+bool sendCanvas::syncArea()
 {
-    command toSend;
-    toSend.opcode = opcodes::sync;
-    emit sendImage(drawImage);
-
+    emit syncSignal(drawImage);
 }
 
-// Regresses the state of the draw area to the previous snapshot (if available).
-void drawArea::undo()
-{
-    // Can the draw area be rolled back?
-    if (history.count() > 0)
-    {
-        // Create a painter, overwrite entire image to latest snapshot.
-        clearArea();
-        drawImage = history.last();
-        update();
-
-        // Remove the snapshot we just rolled back to.
-        history.removeAt(history.count() - 1);
-
-    emit sendImage(drawImage);
-    }
-}
-
-QColor drawArea::penColour()
+QColor sendCanvas::penColour()
 {
     return areaColour;
 }
-void drawArea::setColour(const QColor &colour)
+void sendCanvas::setColour(const QColor &colour)
 {
     areaColour = colour;
-    command sendItem = drawArea::setSerialStruct(opcodes::setPen, drawArea::penWidth(), drawArea::penColour());
-    emit sendCommand(sendItem);
+    drawInfoPen sendItem = setDrawSignalPen(opcodes::setPen, sendCanvas::penWidth(), sendCanvas::penColour());
+    emit drawSignal(sendItem);
 }
-int drawArea::penWidth()
+int sendCanvas::penWidth()
 {
     return areaPenWidth;
 }
-void drawArea::setPenWidth(int width)
+void sendCanvas::setPenWidth(int width)
 {
     areaPenWidth = width;
-    command sendItem = drawArea::setSerialStruct(opcodes::setPen, drawArea::penWidth(), drawArea::penColour());
-    emit sendCommand(sendItem);
+    drawInfoPen sendItem = setDrawSignalPen(opcodes::setPen, sendCanvas::penWidth(), sendCanvas::penColour());
+    emit drawSignal(sendItem);
 }
 
-void drawArea::clearArea()
+void sendCanvas::undo()
+{
+    // Regresses the state of the draw area to the previous snapshot (if available).
+
+    // Can the draw area be rolled back?
+    if (undoHistory.count() > 0)
+    {
+        // Create a painter, overwrite entire image to latest snapshot.
+        clearArea();
+        drawImage = undoHistory.last();
+        update();
+
+        // Remove the snapshot we just rolled back to.
+        undoHistory.removeAt(undoHistory.count() - 1);
+
+        emit syncSignal(drawImage);
+    }
+}
+
+void sendCanvas::clearArea()
 {
     // Replace screen with blank white canvas
     drawImage.fill(qRgb(255, 255, 255));
     update();
 
     // Send draw information to receive window
-    command sendItem = drawArea::setSerialStruct(opcodes::clear);
-    emit sendCommand(sendItem);
-    emit sendImage(drawImage);
+    emit syncSignal(drawImage);
 }
 
-void drawArea::mousePressEvent(QMouseEvent *event)
+void sendCanvas::mousePressEvent(QMouseEvent *event)
 {
     // Snapshot the canvas (jank mode engage)
-    history.append(drawImage.copy());
-    if (history.count() > historyLength)
+    undoHistory.append(drawImage.copy());
+    if (undoHistory.count() > historyLength)
     {
-        history.removeAt(0);
+        undoHistory.removeAt(0);
     }
 
     // If left mouse button pressed
@@ -127,11 +131,10 @@ void drawArea::mousePressEvent(QMouseEvent *event)
     }
 
     // Send draw information to receive window
-    command sendItem = drawArea::setSerialStruct(opcodes::pressEvent, event->pos());
-    emit sendCommand(sendItem);
-    emit sendImage(drawImage);
+    drawInfoPosition sendItem = setDrawSignalPosition(opcodes::pressEvent, event->pos());
+    emit drawSignal(sendItem);
 }
-void drawArea::mouseMoveEvent(QMouseEvent *event)
+void sendCanvas::mouseMoveEvent(QMouseEvent *event)
 {
     // If drawing is enabled
     if (drawing)
@@ -140,12 +143,14 @@ void drawArea::mouseMoveEvent(QMouseEvent *event)
         drawLine(event->pos());
 
         // Send draw information to receive window
-        command sendItem = drawArea::setSerialStruct(opcodes::moveEvent, event->pos());
-        emit sendCommand(sendItem);
-        emit sendImage(drawImage);
+        drawInfoPosition sendItem = setDrawSignalPosition(opcodes::moveEvent, event->pos());
+        emit drawSignal(sendItem);
+
+        // Remove when thread communication works
+        emit syncSignal(drawImage);
     }
 }
-void drawArea::mouseReleaseEvent(QMouseEvent *event)
+void sendCanvas::mouseReleaseEvent(QMouseEvent *event)
 {
     // If left mouse button is released and drawing is enabled
     if ((event->button() == Qt::LeftButton) && drawing)
@@ -154,32 +159,34 @@ void drawArea::mouseReleaseEvent(QMouseEvent *event)
         drawLine(event->pos());
 
         // Send draw information to receive window
-        command sendItem = drawArea::setSerialStruct(opcodes::releaseEvent, event->pos());
-        emit sendCommand(sendItem);
-        emit sendImage(drawImage);
+        drawInfoPosition sendItem = setDrawSignalPosition(opcodes::releaseEvent, event->pos());
+        emit drawSignal(sendItem);
+
+        // Remove when thread communication works
+        emit syncSignal(drawImage);
 
         drawing = false;
     }
 }
 
-void drawArea::paintEvent(QPaintEvent *event)
+void sendCanvas::paintEvent(QPaintEvent *event)
 {
-    //initiate editable area
+    // Initiate editable area
     QPainter paintArea(this);
     QRect newRectangle = event->rect();
 
-    //updates drawImage to edited area
+    // Updates sendCanvas to edited area
     paintArea.drawImage(newRectangle, drawImage, newRectangle);
 }
-void drawArea::resizeEvent(QResizeEvent *event)
+void sendCanvas::resizeEvent(QResizeEvent *event)
 {
-    //if resized window is larger
+    // If resized window is larger
     if (width() > drawImage.width() || height() > drawImage.height())
     {
-        //Create new size information
+        // Create new size information
         QSize newSize(qMax(width() + 128, drawImage.width()), qMax(height() + 128, drawImage.height()));
 
-        //and resize the widget to the bigger size
+        // Then resize the widget to the bigger size
         resizeImage(&drawImage, newSize);
         update();
     }
@@ -187,76 +194,59 @@ void drawArea::resizeEvent(QResizeEvent *event)
     QWidget::resizeEvent(event);
 }
 
-void drawArea::drawLine(const QPoint &endPoint)
+drawInfoPosition sendCanvas::setDrawSignalPosition(uint8_t op, QPoint pos)
+{
+    drawInfoPosition point;
+    point.opcode = op;
+    point.xPosition = pos.x();
+    point.yPosition = pos.y();
+
+    return point;
+}
+drawInfoPen sendCanvas::setDrawSignalPen(uint8_t op, int penWidth, QColor penColour)
+{
+    drawInfoPen pen;
+    pen.opcode = op;
+    pen.width = penWidth;
+    pen.red = penColour.red();
+    pen.green = penColour.green();
+    pen.blue = penColour.blue();
+
+    return pen;
+}
+
+void sendCanvas::drawLine(const QPoint &endPoint)
 {
     QPainter painter(&drawImage);
 
-    //create pen and draw line
+    // Create pen and draw line
     QPen newPen(areaBrushStyle, areaPenWidth, areaPenStyle, areaCapStyle, Qt::RoundJoin);
     newPen.setColor(areaColour);
     painter.setPen(newPen);
     painter.drawLine(prevPoint, endPoint);
 
-    //maintain radius whilst drawing
+    // Maintain radius whilst drawing
     //https://doc.qt.io/qt-5/qtwidgets-widgets-scribble-example.html
     int radius = (areaPenWidth / 2) + 2;
     update(QRect(prevPoint, endPoint).normalized().adjusted(-radius, -radius, +radius, +radius));
 
-    //update point
+    // Update point
     prevPoint = endPoint;
 }
-
-void drawArea::resizeImage(QImage *image, const QSize &newSize)
+void sendCanvas::resizeImage(QImage *image, const QSize &newSize)
 {
-    //if the image size is different
+    // If the image size is different
     if (!(image->size() == newSize))
     {
-        //create blank image of the new size
+        // Create blank image of the new size
         QImage newImage(newSize, QImage::Format_RGB32);
         newImage.fill(qRgb(255, 255, 255));
 
-        //paint old image to the new image
+        // Paint old image to the new image
         QPainter painter(&newImage);
         painter.drawImage(QPoint(0, 0), *image);
 
-        //return new image
+        // Return new image
         *image = newImage;
     }
-}
-
-command drawArea::setSerialStruct(uint8_t op, QPoint pos)
-{
-    command serialData;
-    serialData.opcode = op;
-    serialData.data1 = pos.x();
-    serialData.data2 = pos.y();
-
-    return serialData;
-}
-command drawArea::setSerialStruct(uint8_t op, int penWidth, QColor penColour)
-{
-    uint8_t width = penWidth;
-    uint8_t red = penColour.red();
-    uint8_t green = penColour.green();
-    uint8_t blue = penColour.blue();
-
-
-    command serialData;
-    serialData.opcode = op;
-
-    // Combine information into the two data bits
-    //https://stackoverflow.com/questions/15249791/combining-two-uint8-t-as-uint16-t
-    serialData.data1 = (width << 8) | red;
-    serialData.data2 = (green << 8) | blue;
-
-    return serialData;
-}
-command drawArea::setSerialStruct(uint8_t op)
-{
-    command serialData;
-    serialData.opcode = op;
-    serialData.data1 = 0;
-    serialData.data2 = 0;
-
-    return serialData;
 }

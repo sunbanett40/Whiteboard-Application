@@ -24,6 +24,7 @@ SOURCES += main.cpp\
 
 HEADERS  +=\
         drawarea.h \
+        drawinformation.h \
         queue.h \
         receivearea.h \
         receivewindow.h \

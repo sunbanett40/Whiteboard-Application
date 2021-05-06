@@ -13,7 +13,7 @@ class receiveWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit receiveWindow(QWidget *parent = nullptr, queue<command> *sQueue = nullptr);
+    explicit receiveWindow(QWidget *parent = nullptr);
     ~receiveWindow();
 
     receiveArea *receive;
