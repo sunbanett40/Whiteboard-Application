@@ -4,7 +4,7 @@
 #include <QMainWindow>
 #include <QThread>
 
-#include "receivearea.h"
+#include "receivecanvas.h"
 #include "serialstruct.h"
 #include "queue.h"
 
@@ -16,7 +16,7 @@ public:
     explicit receiveWindow(QWidget *parent = nullptr);
     ~receiveWindow();
 
-    receiveArea *receive;
+    receiveCanvas *canvas;
 
 signals:
     void startPoll();

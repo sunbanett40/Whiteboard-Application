@@ -1,5 +1,5 @@
-#ifndef DRAWAREA_H
-#define DRAWAREA_H
+#ifndef SENDCANVAS_H
+#define SENDCANVAS_H
 
 #include <QWidget>
 #include <QList>

@@ -9,7 +9,7 @@ License:    This work is licensed under the Creative Commons Attribution-ShareAl
 #define SENDWINDOW_H
 
 #include <QMainWindow>
-#include "drawarea.h"
+#include "sendcanvas.h"
 #include "serialstruct.h"
 #include "queue.h"
 #include "drawinformation.h"

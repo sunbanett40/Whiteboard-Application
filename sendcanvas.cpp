@@ -10,7 +10,7 @@ License:    This work is licensed under the Creative Commons Attribution-ShareAl
 #include <QMouseEvent>
 
 #include "sendthread.h"
-#include "drawarea.h"
+#include "sendcanvas.h"
 #include "serialstruct.h"
 
 sendCanvas::sendCanvas(QWidget *parent, queue<command> *sQueue)

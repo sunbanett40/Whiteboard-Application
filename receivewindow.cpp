@@ -4,7 +4,7 @@
 #include "receivethread.h"
 
 receiveWindow::receiveWindow(QWidget *parent)
-    : QMainWindow(parent), receive(new receiveArea(this))
+    : QMainWindow(parent), canvas(new receiveCanvas(this))
 {
 /*
     command serialData;
@@ -16,7 +16,7 @@ receiveWindow::receiveWindow(QWidget *parent)
     connect(worker, &receiveThread::pulledSerialStruct, this, &receiveWindow::receivedSerialStruct);
     receiver.start();
 */
-    setCentralWidget(receive);
+    setCentralWidget(canvas);
 
     qApp->setAttribute(Qt::AA_DontShowIconsInMenus, false);
 

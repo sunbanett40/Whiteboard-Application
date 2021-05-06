@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
     receiveW.move(width*5/9, height/4);
     receiveW.show();
 
-    QObject::connect(sendW.canvas, SIGNAL(syncSignal(QImage)), receiveW.receive, SLOT(receiveImage(QImage)));
+    QObject::connect(sendW.canvas, SIGNAL(syncSignal(QImage)), receiveW.canvas, SLOT(syncSlot(QImage)));
 
     // Starting worker thread(s)
     int rc;

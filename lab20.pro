@@ -14,20 +14,20 @@ TEMPLATE = app
 INCLUDEPATH = G:/1204_Advanced_Programming/P20
 
 SOURCES += main.cpp\
-        drawarea.cpp \
         queue.cpp \
-        receivearea.cpp \
+        receivecanvas.cpp \
         receivewindow.cpp \
+        sendcanvas.cpp \
         sendwindow.cpp \
         sendthread.cpp \
         receivethread.cpp
 
 HEADERS  +=\
-        drawarea.h \
         drawinformation.h \
         queue.h \
-        receivearea.h \
+        receivecanvas.h \
         receivewindow.h \
+        sendcanvas.h \
         sendwindow.h \
         serialstruct.h \
         wiringPi.h \
