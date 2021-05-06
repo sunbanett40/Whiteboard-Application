@@ -23,23 +23,24 @@ I hate Qt
 
 #include "serialstruct.h"
 #include "drawinformation.h"
-
+/*
 class queue
 {
     Q_OBJECT
 
 public:
     queue(int setupSize);
+    ~queue() = default;
 
 signals:
     //void pullFromQueue(QImage);
     //void pullFromQueue(bool[40]);
 
 public slots:
-    void pushToQueue(QImage);
+    //void pushToQueue(QImage);
     //void pushToQueue(bool[40]);
 
-    void pullFromQueueRequest();
+    //void pullFromQueueRequest();
 
 private:
 
@@ -50,10 +51,10 @@ private:
     // Is the queue open?
     bool isOpen;
 
-    QMutex mutex;
+    //QMutex mutex;
 
     // Queue of data packets
-    QQueue<QImage> imageQueue;
+    //QQueue<QImage> imageQueue;
     //QQueue<bool[40]> serialisedQueue;
 };
 

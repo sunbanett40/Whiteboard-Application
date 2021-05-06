@@ -1,10 +1,12 @@
-#include<cmath>
+#include <cmath>
+#include <QDebug>
 
 #include "receivethread.h"
 
-receiveThread::receiveThread(queue *sQueue)
+receiveThread::receiveThread()
 {
-    serialQueue = sQueue;
+    qDebug() << "Receiver thread started";
+    //serialQueue = sQueue;
 }
 
 void receiveThread::pullSerialStruct()
@@ -12,13 +14,13 @@ void receiveThread::pullSerialStruct()
     mutex.lock();
     QImage pulledItem;
 
-    serialQueue->pullFromQueueRequest();
+    //serialQueue->pullFromQueueRequest();
     //receiveThread::checkParityBit(pulledItem);
     mutex.unlock();
 
     //receiveThread::readSerialStruct(pulledItem);
 }
-
+/*
 void receiveThread::readSerialStruct(command serialData)
 {
     uint8_t op = serialData.opcode;
@@ -59,12 +61,12 @@ void receiveThread::readSerialStruct(command serialData)
         this -> resend();
     }
 }
-
+*/
 void receiveThread::poll()
 {
     receiveThread::pullSerialStruct();
 }
-
+/*
 void receiveThread::checkParityBit(command serialData)
 {
     mutex.lock();
@@ -97,7 +99,7 @@ void receiveThread::checkParityBit(command serialData)
     mutex.unlock();
 
 }
-
+*/
 void receiveThread::resend()
 {
     mutex.lock();

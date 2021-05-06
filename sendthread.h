@@ -13,7 +13,7 @@ class sendThread : public QObject
     Q_OBJECT
 
 public:
-    sendThread(queue *sQueue);
+    sendThread();
 
 public slots:
     void pushSerialStruct(QImage serialData);
@@ -23,7 +23,7 @@ protected:
 
 private:
     QMutex mutex;
-    queue *serialQueue;
+    //queue *serialQueue;
 };
 
 #endif // SENDTHREAD_H

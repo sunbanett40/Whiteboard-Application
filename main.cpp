@@ -38,12 +38,12 @@ int main(int argc, char *argv[])
 
     // Create Queue to pass serial information between threads
     //queue<command> serialQueue(40);
-    queue passThroughQueue(100);
+    //queue passThroughQueue(100);
 
     // Creating send window
     QPixmap sendpix(QDir::currentPath() + "/Icons/send_icon.png");
 
-    sendWindow sendW(nullptr, &passThroughQueue);
+    sendWindow sendW(nullptr);
     sendW.setWindowIcon(sendpix);
     sendW.setWindowTitle("Send Window");
     sendW.resize(width/3, height/2);
@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
     // Creating receive window
     QPixmap recievepix(QDir::currentPath() + "/Icons/recieve_icon.png");
 
-    receiveWindow receiveW(nullptr, &passThroughQueue);
+    receiveWindow receiveW(nullptr);
     receiveW.setWindowIcon(recievepix);
     receiveW.setWindowTitle("Receive Window");
     receiveW.resize(width/3, height/2);

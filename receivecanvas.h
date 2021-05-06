@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QList>
+#include <QThread>
 
 #include "drawinformation.h"
 #include "queue.h"
@@ -12,7 +13,7 @@ class receiveCanvas : public QWidget
     Q_OBJECT
 
 public:
-    receiveCanvas(QWidget *parent = nullptr, queue *passThroughQueue = nullptr);
+    receiveCanvas(QWidget *parent = nullptr);
     ~receiveCanvas();
 
     void clearArea();
@@ -47,6 +48,8 @@ private:
 
     QImage drawImage;
     QPoint prevPoint;
+
+    QThread receiver;
 
     // History of edits on the board for undo function
     int historyLength = 20;

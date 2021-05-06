@@ -20,7 +20,7 @@ License:    This work is licensed under the Creative Commons Attribution-ShareAl
 #include "sendthread.h"
 
 
-sendWindow::sendWindow(QWidget *parent, queue *passThroughQueue)
+sendWindow::sendWindow(QWidget *parent)
     : QMainWindow(parent), canvas(new sendCanvas(this))
 {
 

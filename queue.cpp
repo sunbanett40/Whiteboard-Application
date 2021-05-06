@@ -17,7 +17,7 @@ I hate Qt
 #include <QDebug>
 
 #include "queue.h"
-
+/*
 queue::queue(int setupSize)
 {
     currentSize=0;
@@ -26,7 +26,7 @@ queue::queue(int setupSize)
     //Open queue
     isOpen = true;
 }
-
+/*
 void queue::pushToQueue(QImage pushedItem)
 {
     // Create temporary item to store pushed item
@@ -89,7 +89,7 @@ void queue::pushToQueue(QImage pushedItem)
     // Unlock thread so queue can be accessed again
     mutex.unlock();
 }*/
-
+/*
 void queue::pullFromQueueRequest()
 {
     // Create temporary queue to store items

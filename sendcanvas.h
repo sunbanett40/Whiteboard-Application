@@ -14,7 +14,7 @@ class sendCanvas : public QWidget
     Q_OBJECT
 
 public:
-    sendCanvas(QWidget *parent = nullptr, queue *passThroughQueue = nullptr);
+    sendCanvas(QWidget *parent = nullptr);
 
     bool openArea(const QString &file);
     bool saveArea(const QString &file, const char *format);
@@ -33,8 +33,8 @@ public:
 
 signals:
     void syncSignal(QImage sendImage);
-    //void drawSignal(drawInfoPosition point);
-    //void drawSignal(drawInfoPen pen);
+    void drawSignal(drawInfoPosition point);
+    void drawSignal(drawInfoPen pen);
 
 public slots:
     void clearArea();
@@ -60,6 +60,8 @@ private:
 
     QImage drawImage;
     QPoint prevPoint;
+
+    QThread sender;
 
     // History of edits on the board for undo function
     int historyLength = 20;

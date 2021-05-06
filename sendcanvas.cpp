@@ -13,16 +13,16 @@ License:    This work is licensed under the Creative Commons Attribution-ShareAl
 #include "sendcanvas.h"
 #include "serialstruct.h"
 
-sendCanvas::sendCanvas(QWidget *parent, queue *passThroughQueue)
+sendCanvas::sendCanvas(QWidget *parent)
     : QWidget(parent)
 {
-    /*
-    sendThread *worker = new sendThread(sQueue);
+
+    sendThread *worker = new sendThread();
     worker->moveToThread(&sender);
     connect(&sender, &QThread::finished, worker, &QObject::deleteLater);
-    connect(this, &drawArea::sendCommand, worker, &sendThread::pushSerialStruct);
+    connect(this, &sendCanvas::syncSignal, worker, &sendThread::pushSerialStruct);
     sender.start();
-    */
+
 
     setAttribute(Qt::WA_StaticContents);
 }

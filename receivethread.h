@@ -4,6 +4,7 @@
 #include <QQueue>
 #include <QMutex>
 #include <QPainter>
+#include <QImage>
 
 #include "serialstruct.h"
 #include "queue.h"
@@ -14,24 +15,24 @@ class receiveThread : public QObject
 
 
 public:
-    receiveThread(queue *sQueue);
+    receiveThread();
 
     void pullSerialStruct();
-    void readSerialStruct(command serialData);
+    void readSerialStruct(QImage serialData);
 
 public slots:
     void poll();
 
 signals:
-    //void pulledSerialStruct(const command &serialData);
+    void pulledFromQueue(QImage serialData);
 
 protected:
-    void checkParityBit(command serialData);
+    void checkParityBit(QImage serialData);
     void resend();
 
 private:
     QMutex mutex;
-    queue *serialQueue;
+    //queue *serialQueue;
 };
 
 #endif // RECEIVETHREAD_H

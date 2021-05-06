@@ -3,17 +3,17 @@
 #include <QGuiApplication>
 
 #include "receivecanvas.h"
+#include "receivethread.h"
 
-receiveCanvas::receiveCanvas(QWidget *parent, queue *passThroughQueue)
+receiveCanvas::receiveCanvas(QWidget *parent)
     : QWidget(parent)
 {
-    /*
-    sendThread *worker = new sendThread(sQueue);
-    worker->moveToThread(&sender);
-    connect(&sender, &QThread::finished, worker, &QObject::deleteLater);
-    connect(this, &drawArea::sendCommand, worker, &sendThread::pushSerialStruct);
-    sender.start();
-    */
+
+    receiveThread *worker = new receiveThread();
+    worker->moveToThread(&receiver);
+    connect(&receiver, &QThread::finished, worker, &QObject::deleteLater);
+    connect(worker, &receiveThread::pulledFromQueue, this, &receiveCanvas::syncSlot);
+    receiver.start();
 
     setAttribute(Qt::WA_StaticContents);
 }
