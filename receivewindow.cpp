@@ -3,7 +3,7 @@
 #include "receivewindow.h"
 #include "receivethread.h"
 
-receiveWindow::receiveWindow(QWidget *parent)
+receiveWindow::receiveWindow(QWidget *parent, queue *passThroughQueue)
     : QMainWindow(parent), canvas(new receiveCanvas(this))
 {
 /*
@@ -20,7 +20,7 @@ receiveWindow::receiveWindow(QWidget *parent)
 
     qApp->setAttribute(Qt::AA_DontShowIconsInMenus, false);
 
-    emit startPoll();
+    //emit startPoll();
 }
 
 receiveWindow::~receiveWindow() = default;

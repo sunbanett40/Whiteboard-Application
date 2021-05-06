@@ -5,13 +5,14 @@
 #include <QList>
 
 #include "drawinformation.h"
+#include "queue.h"
 
 class receiveCanvas : public QWidget
 {
     Q_OBJECT
 
 public:
-    receiveCanvas(QWidget *parent = nullptr);
+    receiveCanvas(QWidget *parent = nullptr, queue *passThroughQueue = nullptr);
     ~receiveCanvas();
 
     void clearArea();

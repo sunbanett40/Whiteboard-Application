@@ -2,7 +2,7 @@
 
 #include "receivethread.h"
 
-receiveThread::receiveThread(queue<command> *sQueue)
+receiveThread::receiveThread(queue *sQueue)
 {
     serialQueue = sQueue;
 }
@@ -10,13 +10,13 @@ receiveThread::receiveThread(queue<command> *sQueue)
 void receiveThread::pullSerialStruct()
 {
     mutex.lock();
-    command pulledItem;
+    QImage pulledItem;
 
-    serialQueue->pullFromQueue(pulledItem);
-    receiveThread::checkParityBit(pulledItem);
+    serialQueue->pullFromQueueRequest();
+    //receiveThread::checkParityBit(pulledItem);
     mutex.unlock();
 
-    receiveThread::readSerialStruct(pulledItem);
+    //receiveThread::readSerialStruct(pulledItem);
 }
 
 void receiveThread::readSerialStruct(command serialData)
@@ -60,6 +60,11 @@ void receiveThread::readSerialStruct(command serialData)
     }
 }
 
+void receiveThread::poll()
+{
+    receiveThread::pullSerialStruct();
+}
+
 void receiveThread::checkParityBit(command serialData)
 {
     mutex.lock();
@@ -101,7 +106,4 @@ void receiveThread::resend()
     mutex.unlock();
 }
 
-void receiveThread::poll()
-{
-    receiveThread::pullSerialStruct();
-}
+

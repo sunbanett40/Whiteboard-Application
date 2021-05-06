@@ -19,7 +19,7 @@ class sendWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit sendWindow(QWidget *parent = nullptr);
+    explicit sendWindow(QWidget *parent = nullptr, queue *passThroughQueue = nullptr);
     ~sendWindow();
 
     void createMenus();

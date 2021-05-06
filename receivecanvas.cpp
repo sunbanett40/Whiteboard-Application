@@ -4,7 +4,7 @@
 
 #include "receivecanvas.h"
 
-receiveCanvas::receiveCanvas(QWidget *parent)
+receiveCanvas::receiveCanvas(QWidget *parent, queue *passThroughQueue)
     : QWidget(parent)
 {
     /*

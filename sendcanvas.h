@@ -7,14 +7,14 @@
 
 #include "queue.h"
 #include "serialstruct.h"
-#include "drawInformation.h"
+#include "drawinformation.h"
 
 class sendCanvas : public QWidget
 {
     Q_OBJECT
 
 public:
-    sendCanvas(QWidget *parent = nullptr, queue<command> *sQueue = nullptr);
+    sendCanvas(QWidget *parent = nullptr, queue *passThroughQueue = nullptr);
 
     bool openArea(const QString &file);
     bool saveArea(const QString &file, const char *format);
@@ -33,8 +33,8 @@ public:
 
 signals:
     void syncSignal(QImage sendImage);
-    void drawSignal(drawInfoPosition point);
-    void drawSignal(drawInfoPen pen);
+    //void drawSignal(drawInfoPosition point);
+    //void drawSignal(drawInfoPen pen);
 
 public slots:
     void clearArea();

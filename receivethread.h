@@ -14,7 +14,7 @@ class receiveThread : public QObject
 
 
 public:
-    receiveThread(queue<command> *sQueue);
+    receiveThread(queue *sQueue);
 
     void pullSerialStruct();
     void readSerialStruct(command serialData);
@@ -23,7 +23,7 @@ public slots:
     void poll();
 
 signals:
-    void pulledSerialStruct(const command &serialData);
+    //void pulledSerialStruct(const command &serialData);
 
 protected:
     void checkParityBit(command serialData);
@@ -31,7 +31,7 @@ protected:
 
 private:
     QMutex mutex;
-    queue<command> *serialQueue;
+    queue *serialQueue;
 };
 
 #endif // RECEIVETHREAD_H

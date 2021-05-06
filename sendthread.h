@@ -13,17 +13,17 @@ class sendThread : public QObject
     Q_OBJECT
 
 public:
-    sendThread(queue<command> *sQueue);
+    sendThread(queue *sQueue);
 
 public slots:
-    void pushSerialStruct(command serialData);
+    void pushSerialStruct(QImage serialData);
 
 protected:
     void setParityBit(command serialData);
 
 private:
     QMutex mutex;
-    queue<command> *serialQueue;
+    queue *serialQueue;
 };
 
 #endif // SENDTHREAD_H

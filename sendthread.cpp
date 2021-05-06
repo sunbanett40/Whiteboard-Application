@@ -2,14 +2,14 @@
 
 #include "sendthread.h"
 
-sendThread::sendThread(queue<command> *sQueue)
+sendThread::sendThread(queue *sQueue)
 {
     serialQueue = sQueue;
 }
 
-void sendThread::pushSerialStruct(command serialData)
+void sendThread::pushSerialStruct(QImage serialData)
 {
-    this -> setParityBit(serialData);
+    //this -> setParityBit(serialData);
 
     mutex.lock();
     serialQueue->pushToQueue(serialData);

@@ -13,13 +13,13 @@ class receiveWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit receiveWindow(QWidget *parent = nullptr);
+    explicit receiveWindow(QWidget *parent = nullptr, queue *passThroughQueue = nullptr);
     ~receiveWindow();
 
     receiveCanvas *canvas;
 
 signals:
-    void startPoll();
+    //void startPoll();
 
 public slots:
     void receivedSerialStruct(const command &serialData);

@@ -20,7 +20,7 @@ License:    This work is licensed under the Creative Commons Attribution-ShareAl
 #include "sendthread.h"
 
 
-sendWindow::sendWindow(QWidget *parent)
+sendWindow::sendWindow(QWidget *parent, queue *passThroughQueue)
     : QMainWindow(parent), canvas(new sendCanvas(this))
 {
 
@@ -103,13 +103,6 @@ void sendWindow::open()
     if (!fileName.isEmpty())
         canvas->openArea(fileName);
 }
-
-void sendWindow::undo()
-{
-    canvas->undo();
-
-}
-
 void sendWindow::saveas()
 {
     // Get image file formats
@@ -138,6 +131,12 @@ void sendWindow::saveas()
 void sendWindow::sync()
 {
     canvas->syncArea();
+}
+
+void sendWindow::undo()
+{
+    canvas->undo();
+
 }
 
 void sendWindow::colour()

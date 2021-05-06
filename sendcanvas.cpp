@@ -13,7 +13,7 @@ License:    This work is licensed under the Creative Commons Attribution-ShareAl
 #include "sendcanvas.h"
 #include "serialstruct.h"
 
-sendCanvas::sendCanvas(QWidget *parent, queue<command> *sQueue)
+sendCanvas::sendCanvas(QWidget *parent, queue *passThroughQueue)
     : QWidget(parent)
 {
     /*
@@ -71,7 +71,7 @@ void sendCanvas::setColour(const QColor &colour)
 {
     areaColour = colour;
     drawInfoPen sendItem = setDrawSignalPen(opcodes::setPen, sendCanvas::penWidth(), sendCanvas::penColour());
-    emit drawSignal(sendItem);
+    //emit drawSignal(sendItem);
 }
 int sendCanvas::penWidth()
 {
@@ -81,7 +81,7 @@ void sendCanvas::setPenWidth(int width)
 {
     areaPenWidth = width;
     drawInfoPen sendItem = setDrawSignalPen(opcodes::setPen, sendCanvas::penWidth(), sendCanvas::penColour());
-    emit drawSignal(sendItem);
+    //emit drawSignal(sendItem);
 }
 
 void sendCanvas::undo()
@@ -132,7 +132,7 @@ void sendCanvas::mousePressEvent(QMouseEvent *event)
 
     // Send draw information to receive window
     drawInfoPosition sendItem = setDrawSignalPosition(opcodes::pressEvent, event->pos());
-    emit drawSignal(sendItem);
+    //emit drawSignal(sendItem);
 }
 void sendCanvas::mouseMoveEvent(QMouseEvent *event)
 {
@@ -144,7 +144,7 @@ void sendCanvas::mouseMoveEvent(QMouseEvent *event)
 
         // Send draw information to receive window
         drawInfoPosition sendItem = setDrawSignalPosition(opcodes::moveEvent, event->pos());
-        emit drawSignal(sendItem);
+        //emit drawSignal(sendItem);
 
         // Remove when thread communication works
         emit syncSignal(drawImage);
@@ -160,7 +160,7 @@ void sendCanvas::mouseReleaseEvent(QMouseEvent *event)
 
         // Send draw information to receive window
         drawInfoPosition sendItem = setDrawSignalPosition(opcodes::releaseEvent, event->pos());
-        emit drawSignal(sendItem);
+        //emit drawSignal(sendItem);
 
         // Remove when thread communication works
         emit syncSignal(drawImage);
