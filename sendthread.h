@@ -5,7 +5,7 @@
 #include <QMutex>
 #include <QPainter>
 
-#include "serialstruct.h"
+#include "drawinformation.h"
 #include "queue.h"
 
 class sendThread : public QObject
@@ -13,17 +13,19 @@ class sendThread : public QObject
     Q_OBJECT
 
 public:
-    sendThread(queue<command> *sQueue);
+    sendThread();
 
 public slots:
-    void pushSerialStruct(command serialData);
+    void pushSerialStruct(drawInfoPosition serialData);
+    void pushSerialStruct(drawInfoPen serialData);
 
 protected:
-    void setParityBit(command serialData);
+    void setParityBit(drawInfoPosition serialData);
+    void setParityBit(drawInfoPen serialData);
 
 private:
     QMutex mutex;
-    queue<command> *serialQueue;
+    //queue *serialQueue;
 };
 
 #endif // SENDTHREAD_H

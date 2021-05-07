@@ -1,24 +1,44 @@
-#include<cmath>
+#include <cmath>
+#include <QDebug>
 
 #include "receivethread.h"
 
-receiveThread::receiveThread(queue<command> *sQueue)
+receiveThread::receiveThread()
 {
-    serialQueue = sQueue;
+    qDebug() << "Receiver thread started";
+    //serialQueue = sQueue;
 }
 
 void receiveThread::pullSerialStruct()
 {
     mutex.lock();
-    command pulledItem;
+    drawInfoPosition pulledItem;
 
-    serialQueue->pullFromQueue(pulledItem);
+    //serialQueue->pullFromQueueRequest();
     receiveThread::checkParityBit(pulledItem);
     mutex.unlock();
 
-    receiveThread::readSerialStruct(pulledItem);
-}
+    bool serialsedArray[48];
 
+    drawInfoPosition serialData;
+    uint16_t temp[3] = {serialData.opcode, serialData.xPosition, serialData.yPosition};
+
+    // Loop over each element of the temporary array
+    for(int i = 0; i < 3; i++)
+    {
+        for(int j = 15; j>= 0; j--)
+        {
+            // Convert to decimal
+            if (serialsedArray[i*i+j])
+            {
+                temp[i] += pow(2,j);
+            }
+        }
+    }
+
+    //receiveThread::readSerialStruct(pulledItem);
+}
+/*
 void receiveThread::readSerialStruct(command serialData)
 {
     uint8_t op = serialData.opcode;
@@ -59,12 +79,17 @@ void receiveThread::readSerialStruct(command serialData)
         this -> resend();
     }
 }
+*/
+void receiveThread::poll()
+{
+    receiveThread::pullSerialStruct();
+}
 
-void receiveThread::checkParityBit(command serialData)
+void receiveThread::checkParityBit(drawInfoPosition serialData)
 {
     mutex.lock();
     int bitCount = 0;
-    uint16_t temp[3] = {serialData.opcode, serialData.data1, serialData.data2};
+    uint16_t temp[3] = {serialData.opcode, serialData.xPosition, serialData.yPosition};
 
     // Loop over each element of the temporary array
     for(int i = 0; i < 3; i++)
@@ -101,7 +126,4 @@ void receiveThread::resend()
     mutex.unlock();
 }
 
-void receiveThread::poll()
-{
-    receiveThread::pullSerialStruct();
-}
+

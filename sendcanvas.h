@@ -1,5 +1,5 @@
-#ifndef DRAWAREA_H
-#define DRAWAREA_H
+#ifndef SENDCANVAS_H
+#define SENDCANVAS_H
 
 #include <QWidget>
 #include <QList>
@@ -7,36 +7,40 @@
 
 #include "queue.h"
 #include "serialstruct.h"
+#include "drawinformation.h"
 
-class drawArea : public QWidget
+class sendCanvas : public QWidget
 {
     Q_OBJECT
 
 public:
-    drawArea(QWidget *parent = nullptr, queue<command> *sQueue = nullptr);
+    sendCanvas(QWidget *parent = nullptr);
 
     bool openArea(const QString &file);
     bool saveArea(const QString &file, const char *format);
     bool syncArea();
-    void undo();
 
+    // Control pen colour
     QColor penColour();
     void setColour(const QColor &colour);
 
+    // Control pen width
     int penWidth();
     void setPenWidth(int width);
-    
-    //history of edits on the board
-    QList<QImage> history;
-    int historyLength;
+
+    // Undo Control
+    void undo();
+
+signals:
+    void syncSignal(QImage sendImage);
+    void drawSignal(drawInfoPosition point);
+    void drawSignal(drawInfoPen pen);
 
 public slots:
     void clearArea();
-signals:
-    void sendCommand(const command &serialData);
-    void sendImage(QImage sendImage);
 
 protected:
+    // Overwrite mouse press events
     void mousePressEvent(QMouseEvent *event) override;
     void mouseMoveEvent(QMouseEvent *event) override;
     void mouseReleaseEvent(QMouseEvent *event) override;
@@ -44,9 +48,9 @@ protected:
     void paintEvent(QPaintEvent *event) override;
     void resizeEvent(QResizeEvent *event) override;
 
-    command setSerialStruct(uint8_t op, QPoint pos);
-    command setSerialStruct(uint8_t op, int penWidth, QColor penColour);
-    command setSerialStruct(uint8_t op);
+    // Converts window information into data Structs
+    drawInfoPosition setDrawSignalPosition(uint8_t op, QPoint pos);
+    drawInfoPen setDrawSignalPen(uint8_t op, int penWidth, QColor penColour);
 
 private:
     void drawLine(const QPoint &endPoint);
@@ -57,13 +61,19 @@ private:
     QImage drawImage;
     QPoint prevPoint;
 
+    QThread sender;
+
+    // History of edits on the board for undo function
+    int historyLength = 20;
+    QList<QImage> undoHistory;
+
+    // Initialising pen with default values
     QColor areaColour = Qt::black;
     int areaPenWidth = 4;
     Qt::PenStyle areaPenStyle = Qt::SolidLine;
     Qt::PenCapStyle areaCapStyle = Qt::SquareCap;
     Qt::BrushStyle areaBrushStyle = Qt::SolidPattern;
 
-    QThread sender;
 };
 
 #endif // RECIEVEAREA_H

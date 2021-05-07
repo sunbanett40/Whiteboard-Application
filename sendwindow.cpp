@@ -1,24 +1,30 @@
+/*
+Project:    Whiteboard Chat Application - P20 Qt Project
+Author:     Joseph Butterworth
+License:    This work is licensed under the Creative Commons Attribution-ShareAlike License.
+            View this license at https://creativecommons.org/licenses/
+*/
+
 #include <QApplication>
 #include <QDir>
+#include <QFileDialog>
+#include <QInputDialog>
+#include <QColorDialog>
+#include <QAction>
 #include <QMenu>
 #include <QMenuBar>
 #include <QToolBar>
-#include <QAction>
-#include <QMainWindow>
-#include <QFileDialog>
-#include <QColorDialog>
-#include <QInputDialog>
 #include <QImageWriter>
 
 #include "sendwindow.h"
 #include "sendthread.h"
 
 
-sendWindow::sendWindow(QWidget *parent, queue<command> *serialQueue)
-    : QMainWindow(parent), draw(new drawArea(this))
+sendWindow::sendWindow(QWidget *parent)
+    : QMainWindow(parent), canvas(new sendCanvas(this))
 {
 
-    setCentralWidget(draw);
+    setCentralWidget(canvas);
 
     sendWindow::createMenus();
     qApp->setAttribute(Qt::AA_DontShowIconsInMenus, false);
@@ -29,7 +35,7 @@ sendWindow::~sendWindow() = default;
 
 void sendWindow::createMenus()
 {
-    //File Menu
+    // File Menu
     QPixmap openpix(QDir::currentPath() + "/Icons/open.png");
     auto *open = new QAction(openpix, "&Open", this);
     open->setShortcut(tr("CTRL+O"));
@@ -52,7 +58,7 @@ void sendWindow::createMenus()
     connect(saveas, &QAction::triggered, this, &sendWindow::saveas);
     connect(quit, &QAction::triggered, qApp, &QApplication::quit);
 
-    //Edit Menu
+    // Edit Menu
     QPixmap undopix(QDir::currentPath() + "/Icons/undo.png");
     auto *undo = new QAction(undopix, "&Undo", this);
     undo->setShortcut(tr("CTRL+Z"));
@@ -62,7 +68,7 @@ void sendWindow::createMenus()
 
     connect(undo, &QAction::triggered, this, &sendWindow::undo);
 
-    //Board Menu
+    // Board Menu
     QPixmap syncpix(QDir::currentPath() + "/Icons/sync.png");
     auto *sync = new QAction(syncpix, "&Sync", this);
     sync->setShortcut(tr("F5"));
@@ -76,7 +82,7 @@ void sendWindow::createMenus()
     board->addAction(clear);
 
     connect(open, &QAction::triggered, this, &sendWindow::sync);
-    connect(clear, &QAction::triggered, draw, &drawArea::clearArea);
+    connect(clear, &QAction::triggered, canvas, &sendCanvas::clearArea);
 
     //Toolbar
     auto *colour = new QAction("&Colour", this);
@@ -93,26 +99,16 @@ void sendWindow::createMenus()
 
 void sendWindow::open()
 {
-    QString fileName = QFileDialog::getOpenFileName(this,
-                                                    tr("Open File"), QDir::currentPath());
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"), QDir::currentPath());
     if (!fileName.isEmpty())
-        draw->openArea(fileName);
+        canvas->openArea(fileName);
 }
-
-//jank undo
-void sendWindow::undo()
-{
-    draw->undo();
-
-}
-
 void sendWindow::saveas()
 {
-
-    //get image file formats
+    // Get image file formats
     const QList<QByteArray> imageFormats = QImageWriter::supportedImageFormats();
 
-    //create file filter from QList
+    // Create file filter from QList
     QString fileFilter = "";
     for(const QByteArray &format : imageFormats)
     {
@@ -121,51 +117,49 @@ void sendWindow::saveas()
     }
     //qDebug() << fileFilter;
 
-    //set filename from dialog box
+    // Set filename from dialog box
     QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"), QDir::currentPath() + "/untitled", fileFilter);
 
+    // Set fileformat from dialog box
     //absolute pain
     char *format = fileName.split(".").last().toUtf8().data();
 
-    //pass to draw area function
+    // Pass to draw area function
     if (!fileName.isEmpty())
-        draw->saveArea(fileName, format);
+        canvas->saveArea(fileName, format);
 }
 void sendWindow::sync()
-{}
+{
+    canvas->syncArea();
+}
+
+void sendWindow::undo()
+{
+    canvas->undo();
+
+}
 
 void sendWindow::colour()
 {
-    //open colour dialogbox
-    QColor newColour = QColorDialog::getColor(draw->penColour());
+    // Open colour dialogbox
+    QColor newColour = QColorDialog::getColor(canvas->penColour());
 
-    //set new colour
-    draw->setColour(newColour);
+    // Set new colour
+    canvas->setColour(newColour);
 }
 void sendWindow::penWidth()
 {
+    // Select button
     bool ok;
 
-    //get pen width
-    int newWidth = QInputDialog::getInt(this, tr("Pen Width"), tr("Select pen width:"),
-                                        draw->penWidth(), 1, 50, 1, &ok);
+    // Get pen width
+    int newWidth = QInputDialog::getInt(this, tr("Pen Width"), tr("Select pen width:"), canvas->penWidth(), 1, 50, 1, &ok);
+
+    // When button is hit
     if (ok)
     {
-        draw->setPenWidth(newWidth);
+        canvas->setPenWidth(newWidth);
     }
 }
-void sendWindow::capStyle()
-{
-    bool ok;
 
-    //List of options
-    QMap<QString, Qt::PenCapStyle> styleMap;
-    styleMap["Round Cap"] = Qt::RoundCap;
-    styleMap["Square Cap"] = Qt::SquareCap;
-    styleMap["Rough Cap"] = Qt::FlatCap;
-
-    //get pen style
-    QString newCapStyle = QInputDialog::getItem(this, tr("Cap Style"), tr("Select cap style:"),
-                                                styleMap.keys(), 1, false, &ok);
-}
 

@@ -4,7 +4,7 @@
 #include <QMainWindow>
 #include <QThread>
 
-#include "receivearea.h"
+#include "receivecanvas.h"
 #include "serialstruct.h"
 #include "queue.h"
 
@@ -13,13 +13,13 @@ class receiveWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit receiveWindow(QWidget *parent = nullptr, queue<command> *sQueue = nullptr);
+    explicit receiveWindow(QWidget *parent = nullptr);
     ~receiveWindow();
 
-    receiveArea *receive;
+    receiveCanvas *canvas;
 
 signals:
-    void startPoll();
+    //void startPoll();
 
 public slots:
     void receivedSerialStruct(const command &serialData);
