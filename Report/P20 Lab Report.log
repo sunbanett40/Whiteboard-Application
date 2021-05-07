@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (MiKTeX 21.3) (preloaded format=pdflatex 2021.4.29)  7 MAY 2021 10:50
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (MiKTeX 21.3) (preloaded format=pdflatex 2021.4.29)  7 MAY 2021 11:42
 entering extended mode
 **"./P20 Lab Report.tex"
 (P20 Lab Report.tex
@@ -875,146 +875,157 @@ File: lstlang1.sty 2020/03/24 1.8d listings language file
 File: lstmisc.sty 2020/03/24 1.8d (Carsten Heinz)
 )
 LaTeX Font Info:    Trying to load font information for OT1+lmtt on input line 
-190.
+192.
 
 (C:\Users\ludde\AppData\Local\Programs\MiKTeX\tex/latex/lm\ot1lmtt.fd
 File: ot1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    Font shape `OT1/lmtt/bx/n' in size <10> not available
-(Font)              Font shape `OT1/lmtt/b/n' tried instead on input line 194.
+(Font)              Font shape `OT1/lmtt/b/n' tried instead on input line 196.
  [1
 
 {C:/Users/ludde/AppData/Local/MiKTeX/pdftex/config/pdftex.map}]
-Overfull \hbox (1.21573pt too wide) in paragraph at lines 246--248
+Overfull \hbox (1.21573pt too wide) in paragraph at lines 248--250
 [][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][
 ][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]  
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 259--262
+Underfull \hbox (badness 10000) in paragraph at lines 261--264
 \OT1/lmr/m/n/10 that used the QFile-Di-a-log, QIn-put-Di-a-log and
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 293--294
+Underfull \hbox (badness 10000) in paragraph at lines 295--296
 
  []
 
 [2]
-Underfull \hbox (badness 10000) in paragraph at lines 361--362
+Underfull \hbox (badness 10000) in paragraph at lines 363--364
 
  []
 
-<./application.png, id=167, 1264.725pt x 790.45313pt>
+
+Overfull \hbox (18.01547pt too wide) in paragraph at lines 375--376
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]  
+ []
+
+
+Underfull \hbox (badness 8019) in paragraph at lines 378--380
+\OT1/lmr/m/n/10 The send and re-ceive threads can-not di-rectly
+ []
+
+[3]
+<./application.png, id=239, 1264.725pt x 790.45313pt>
 File: ./application.png Graphic file (type png)
 <use ./application.png>
-Package pdftex.def Info: ./application.png  used on input line 374.
+Package pdftex.def Info: ./application.png  used on input line 394.
 (pdftex.def)             Requested size: 115.33508pt x 72.07849pt.
-<./application drawing.png, id=169, 1264.725pt x 790.45313pt>
+<./application drawing.png, id=241, 1264.725pt x 790.45313pt>
 File: ./application drawing.png Graphic file (type png)
 <use ./application drawing.png>
-Package pdftex.def Info: ./application drawing.png  used on input line 381.
+Package pdftex.def Info: ./application drawing.png  used on input line 401.
 (pdftex.def)             Requested size: 115.33508pt x 72.07849pt.
-<./file.png, id=170, 426.09187pt x 422.32782pt>
+<./file.png, id=242, 426.09187pt x 422.32782pt>
 File: ./file.png Graphic file (type png)
 <use ./file.png>
-Package pdftex.def Info: ./file.png  used on input line 394.
+Package pdftex.def Info: ./file.png  used on input line 414.
 (pdftex.def)             Requested size: 76.8925pt x 76.20905pt.
-<./edit.png, id=171, 425.33907pt x 421.575pt>
+<./edit.png, id=243, 425.33907pt x 421.575pt>
 File: ./edit.png Graphic file (type png)
 <use ./edit.png>
-Package pdftex.def Info: ./edit.png  used on input line 401.
+Package pdftex.def Info: ./edit.png  used on input line 421.
 (pdftex.def)             Requested size: 76.8925pt x 76.20828pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 402--402
+Underfull \hbox (badness 10000) in paragraph at lines 422--422
 []\OT1/lmr/m/n/8 (b) |Edit Menu
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 402--402
+Underfull \hbox (badness 10000) in paragraph at lines 422--422
 \OT1/lmr/m/n/8 with the undo
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 402--402
+Underfull \hbox (badness 10000) in paragraph at lines 422--422
 \OT1/lmr/m/n/8 func-tion-al-ity, redo
  []
 
 
-Underfull \hbox (badness 5741) in paragraph at lines 402--402
+Underfull \hbox (badness 5741) in paragraph at lines 422--422
 \OT1/lmr/m/n/8 was to be added
  []
 
-<./board.png, id=172, 425.33907pt x 422.32782pt>
+<./board.png, id=244, 425.33907pt x 422.32782pt>
 File: ./board.png Graphic file (type png)
 <use ./board.png>
-Package pdftex.def Info: ./board.png  used on input line 408.
+Package pdftex.def Info: ./board.png  used on input line 428.
 (pdftex.def)             Requested size: 76.8925pt x 76.34438pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 409--409
+Underfull \hbox (badness 10000) in paragraph at lines 429--429
 []\OT1/lmr/m/n/8 (c) |Board menu
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 409--409
+Underfull \hbox (badness 10000) in paragraph at lines 429--429
 \OT1/lmr/m/n/8 al-lows the screen
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 409--409
+Underfull \hbox (badness 10000) in paragraph at lines 429--429
 \OT1/lmr/m/n/8 to be cleared or
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 409--409
+Underfull \hbox (badness 10000) in paragraph at lines 429--429
 \OT1/lmr/m/n/8 win-dows to be
  []
 
-<./open.png, id=173, 1264.725pt x 790.45313pt>
+<./open.png, id=245, 1264.725pt x 790.45313pt>
 File: ./open.png Graphic file (type png)
 <use ./open.png>
-Package pdftex.def Info: ./open.png  used on input line 421.
+Package pdftex.def Info: ./open.png  used on input line 441.
 (pdftex.def)             Requested size: 115.33508pt x 72.07849pt.
-<./save.png, id=174, 1264.725pt x 790.45313pt>
+<./save.png, id=246, 1264.725pt x 790.45313pt>
 File: ./save.png Graphic file (type png)
 <use ./save.png>
-Package pdftex.def Info: ./save.png  used on input line 428.
+Package pdftex.def Info: ./save.png  used on input line 448.
 (pdftex.def)             Requested size: 115.33508pt x 72.07849pt.
-[3 <./application.png> <./application drawing.png> <./file.png> <./edit.png> <.
-/board.png>]
-<./colour.png, id=241, 1264.725pt x 790.45313pt>
+<./colour.png, id=247, 1264.725pt x 790.45313pt>
 File: ./colour.png Graphic file (type png)
 <use ./colour.png>
-Package pdftex.def Info: ./colour.png  used on input line 441.
+Package pdftex.def Info: ./colour.png  used on input line 461.
 (pdftex.def)             Requested size: 115.33508pt x 72.07849pt.
-<./width.png, id=242, 1264.725pt x 790.45313pt>
+<./width.png, id=248, 1264.725pt x 790.45313pt>
 File: ./width.png Graphic file (type png)
 <use ./width.png>
-Package pdftex.def Info: ./width.png  used on input line 448.
+Package pdftex.def Info: ./width.png  used on input line 468.
 (pdftex.def)             Requested size: 115.33508pt x 72.07849pt.
-
 No file "P20 Lab Report".bbl.
-[4 <./open.png> <./save.png> <./colour.png> <./width.png>]
+[4 <./application.png> <./application drawing.png> <./file.png> <./edit.png> <.
+/board.png> <./open.png> <./save.png> <./colour.png> <./width.png>]
 
 Package caption Warning: Unused \captionsetup[table] on input line 83.
 See the caption package documentation for explanation.
 
 (P20 Lab Report.aux)
 Package rerunfilecheck Info: File `"P20 Lab Report".out' has not changed.
-(rerunfilecheck)             Checksum: A626FA7C35E515A815450B49DAF85C6C;2289.
+(rerunfilecheck)             Checksum: 7509BDB735454BF0F4914553184C939F;2602.
  ) 
 Here is how much of TeX's memory you used:
- 15675 strings out of 479321
- 236644 string characters out of 2856583
- 1185362 words of memory out of 3000000
- 32725 multiletter control sequences out of 15000+600000
+ 15713 strings out of 479321
+ 237159 string characters out of 2856583
+ 1182930 words of memory out of 3000000
+ 32752 multiletter control sequences out of 15000+600000
  444665 words of font info for 60 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 73i,11n,89p,604b,1544s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 73i,11n,89p,604b,1548s stack positions out of 5000i,500n,10000p,200000b,80000s
 {C:/Users/ludde/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-rm.enc}{C
+:/Users/ludde/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-mathit.enc}{C
 :/Users/ludde/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-rmtt.enc}<C:/
 Users/ludde/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmbx10.pfb><C:/
 Users/ludde/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmbx12.pfb><C:/
+Users/ludde/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmmi10.pfb><C:/
 Users/ludde/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr10.pfb><C:/U
 sers/ludde/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr12.pfb><C:/Us
 ers/ludde/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr17.pfb><C:/Use
@@ -1024,9 +1035,9 @@ udde/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmri10.pfb><C:/Users/l
 udde/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtk10.pfb><C:/Users/l
 udde/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtt10.pfb><C:/Users/l
 udde/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtti10.pfb>
-Output written on "P20 Lab Report.pdf" (4 pages, 1296476 bytes).
+Output written on "P20 Lab Report.pdf" (4 pages, 1307750 bytes).
 PDF statistics:
- 322 PDF objects out of 1000 (max. 8388607)
- 161 named destinations out of 1000 (max. 500000)
- 158 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 343 PDF objects out of 1000 (max. 8388607)
+ 172 named destinations out of 1000 (max. 500000)
+ 166 words of extra memory for PDF output out of 10000 (max. 10000000)
 

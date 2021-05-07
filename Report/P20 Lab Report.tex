@@ -183,6 +183,8 @@ deserialize them? How will you draw them on the receive window? How will
 you retain the currently received diagram so that when the window is
 repainted the diagram isn’t lost?
 
+\subsection{Class Architecture of the Whiteboard Applicatoin}
+
 \section{Implementation}
 \subsection{The GUI - Send and Receive Window}
 On initiasation, the program creates new instances of the sendWindow and receiveWindow classes. The new windows are then given defined parameters, they are named and resized to a proportion of the screen they are being displayed on.
@@ -309,7 +311,7 @@ typedef struct drawInfoPosition
 } drawInfoPosition;
 \end{lstlisting}
 \figsquish $\\$
-The drawInfoPosition struct could easily be serialised by loopiing over every element and pushing it to a boolean array. This is now the sequential series that can be pushed to the queue across a pin or onto a threadsafe queue.
+The drawInfoPosition struct could easily be serialised by loopiing over every element and pushing it to a boolean array. This is now the sequential series that can be pushed across a pin or onto a threadsafe queue.
 $\\$ \figsquish
 \begin{lstlisting}[language=C++]
 uint16_t temp[3] = {serialData.opcode, 
@@ -336,7 +338,7 @@ for(int i = 0; i < 3; i++)
 }
 \end{lstlisting}
 \figsquish $\\$
-Likewise the boolean array can be deserialised when it is received back into a drawInfoPosition struct.
+Likewise the boolean array can be deserialised when it is received back into a drawInfoPosition struct, from which a QPoint can be constructed.
 $\\$ \figsquish
 \begin{lstlisting}[language=C++]
 drawInfoPosition serialData;
@@ -360,10 +362,28 @@ for(int i = 0; i < 3; i++)
 \end{lstlisting}
 \figsquish $\\$
 \subsection{The Send and Receive Threads}
-text
+To pass the serialised information across without using a large thread overhead worker threads have to be used. As the send and receive canvases are the classes that use the positional information it would be effeceint to send the information directly between them. Hence, the worker threads to the send and receive window should be instantiated in the send and receive canvases.
+$\\$ \figsquish
+\begin{lstlisting}[language=C++]
+sendThread *worker = new sendThread();
+worker->moveToThread(&sender);
+connect(&sender, &QThread::finished, worker, 
+	&QObject::deleteLater);
+connect(this, 
+	SIGNAL(drawSignal(drawInfoPosition)), 
+	worker, SLOT(pushSerialStruct(
+	drawInfoPosition)));
+sender.start();
+\end{lstlisting}
+\figsquish $\\$
+The send and receive threads cannot directly communicate with each other using signals and slots as they cannot be referenced to each other. As such they require an entity in common that they may both interact with. To allow this communication a thread safe queue class template was to be implemented to allow easy communication between the threads.
+
+However, the threadsafe queue that was implemented failed to initialise correctly and either created a compile error $undefiened\ reference\ to\ vtable$ or worse would compile then give a SIGSEGV error when opening. A large portion of the time spent on this project was spent trying to resolve this issue. The errors in the queue class template were never resolved. Therefore, the send and receive thread were never able to communicate.
 
 \subsection{Communication Protocol using Booleans}
-text
+Despite the inability for the threads to communicate there was still progress in creating a communication protocol.
+
+
 
 \section{Final Application}
 
