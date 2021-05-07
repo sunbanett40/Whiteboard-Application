@@ -137,7 +137,7 @@
 \setlength{\tabcolsep}{0cm} % No additional column spacing since we've set it strictly.
 \centering
 \begin{tabular}{p{2cm}p{\textwidth-2cm}}
-    Abstract: &
+    Abstract: & 
     
 \end{tabular}  
 }
@@ -152,43 +152,38 @@
 
 \section{Theory}
 \subsection{QPainter}
-How will the send-window allow users to draw diagrams? How will it display
-diagrams as they are being drawn, and how will it retain these diagrams so
-that they don’t disappear when the window is repainted?
+The send window will have a central widget that will display a QImage of what has been drawn. The user will be able to "draw" this image by using a digital pen, controlled by there mouse.
 
-QPainter is a part of the qt library family that allows you to draw pixel graphics. For this application, QPainter will be used to modify a QImage.
+QPainter is a part of the qt library family that allows you to draw pixel graphics. For this application, QPainter will be used to modify a QImage of the drawing canvas. Any modifications to the canvas shall be retained as the QImage will be overwritten with them.
 
-\subsection{Threads and Mutexes}
-Threads - threads are a set of calculations run in the order of using a process. Threads are run in parallel meaning more operations can be run at any given time.
+To control the pen the canvas will have to override the standard mouse press event and gather position data. The canvas will then use QPainter to draw a line between the positions of the mouse. 
 
-pthreads (POSIX threads) - is a library in C style languages that allows for thread control.This allows multiple processes to be run simultaneously in a program
-
-QThread - is a class that uses pthreads in qt create. It has member functions that enable  access to pthread functions in an object orientated method. 
-
-
-How will you use threads to send and receive these packets, while the rest of
-the application keeps running? How will you use mutexes to make any relevant
-collections “thread-safe”?
+To display what the user is drawing whilst they are drawing it the canvas will have to draw the lines whilst the mouse is being pressed. This means that the line drawing functionality must be called within the mouseMoveEvent.
 
 \subsection{Serialisation}
-How will you serialize these commands into packets to be sent from the send
-window?
+Serialisation is the process of converting a piece of information into a sequential stream of values. To communicate the positional data between the send and receive windows the postional data will be serialised into an array of booleans.
 
-How will you convert binary packets into a stream of 1’s and 0’s? How will you
-transmit this stream in a reliable way? For example, you may need to signal
-when a bit is ready to be read, and when the receive window has finished
-reading the current bit.
+To convert my positional information from integers to a boolean array a looped decimal to binary operation will be performed, this will sequentially load values into the boolean array.
+
+\subsection{Threads and Mutexes}
+Threads are a set of calculations run in the order of using a process. Threads are run in parallel meaning more operations can be run at any given time.
+
+pthreads (POSIX threads) are a library in C style languages that allows for thread control.This allows multiple processes to be run simultaneously in a program. QThread is a class that uses pthreads in the qt library family. It has member functions that enable access to pthread functions in an object orientated method. 
+
+To send information between the send and receive canvases requires a large thread overhead, this would significantly reduce the responsiveness of the draw canvas. To stop this from happening the communication between canvases will be carried out by worker threads.
+
+When a piece of information can be accessed by more than one piece of code at once there is a chance for a race condition to occur. If one thread is writing to a variable at the same time the other is reading from it the information being read may get overwritten.
+
+A mutex is a way of controlling a piece of code so that it can only be accessed by one thread at a time. If only one thread can access piece of information at a time then there is no chance of a race condition. The code is now considered thread safe because a race condition cannot occur.
 
 \subsection{Simplex, Half-Duplex, and Duplex Communication}
-How will you represent the drawing commands so that they can be sent to the
-other user whilst they are being drawn?
+Simplex communication is information going one way from a master to a slave device. Simplex communication only needs one chanel and is the easiest to implement
 
-How will you receive and buffer packets at the other end? How will you
-deserialize them? How will you draw them on the receive window? How will
-you retain the currently received diagram so that when the window is
-repainted the diagram isn’t lost?
+Half-Duplex communication is information going one way from a master to a slave device (MOSI) then information going the other way from the slave to the master device (MISO). Half-Duplex may have one or two channels and usually uses the MISO as an acknowledgement or resend request.
 
-\subsection{Class Architecture of the Whiteboard Applicatoin}
+Duplex communication  is information going in both directions. It requires atleast two channels and is common when two comparable devices are communicating.
+
+An initial implementation of the whiteboard chat application would use a simplex model of communication, only sending the positional data. A more advanced half-duplex communication protocol may then be implemented to enable acknowledgment and resend requests.
 
 \section{Implementation}
 \subsection{The GUI - Send and Receive Windows}
