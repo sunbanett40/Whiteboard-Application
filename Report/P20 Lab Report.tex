@@ -381,9 +381,47 @@ The send and receive threads cannot directly communicate with each other using s
 However, the threadsafe queue that was implemented failed to initialise correctly and either created a compile error $undefiened\ reference\ to\ vtable$ or worse would compile then give a SIGSEGV error when opening. A large portion of the time spent on this project was spent trying to resolve this issue. The errors in the queue class template were never resolved. Therefore, the send and receive thread were never able to communicate.
 
 \subsection{Communication Protocol using Booleans}
-Despite the inability for the threads to communicate there was still progress in creating a communication protocol.
+Despite the inability for the threads to communicate there was still progress in creating a communication protocol between them. For a communication to occur there was to be shared bits in the queue class that could be toggled by either thread. One to say the data packet had been received and one to say that the parity check had failed.
 
+The send thread was going to set the first bit in the serialData.opcode if there was an odd number of bits, so that there was always an even number of bits in the transmition. It would do this by looping over the entire drawInfoPosition struct and keep a count of every set bit,  if that count was zero it would then perform a bitwise OR operation to set the parity bit.
+$\\$ \figsquish
+\begin{lstlisting}[language=C++]
+void sendThread::setParityBit(drawInfoPosition 
+	serialData)
+{
+    int bitCount = 0;
+    uint16_t temp[3] = {serialData.opcode, 
+	serialData.xPosition, 
+	serialData.yPosition};
 
+    // Loop over each element of the 
+    //temporary array
+    for(int i = 0; i < 3; i++)
+    {
+        for(int j = 15; j>= 0; j--)
+        {
+            // Convert to binary
+            if (temp[i] >= pow(2, j))
+            {
+
+                temp[i] -= pow(2, j);
+
+                // Increase Local Count
+                bitCount++;
+            }
+        }
+    }
+
+    // If odd number of bits
+    if(bitCount % 2 != 0)
+    {
+        // Set Parity Bit
+        serialData.opcode |= (1 << 7);
+    }
+}
+\end{lstlisting}
+\figsquish $\\$
+The receive thread would perform a similar operation, counting every bit in the drawInfoPosition it received and setting the paritycheckfailed bit if there were an odd number of bits.
 
 \section{Final Application}
 
