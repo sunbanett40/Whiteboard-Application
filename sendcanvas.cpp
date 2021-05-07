@@ -62,6 +62,8 @@ bool sendCanvas::saveArea(const QString &file, const char *format)
 bool sendCanvas::syncArea()
 {
     emit syncSignal(drawImage);
+
+    return true;
 }
 
 QColor sendCanvas::penColour()

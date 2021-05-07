@@ -12,7 +12,7 @@ receiveCanvas::receiveCanvas(QWidget *parent)
     receiveThread *worker = new receiveThread();
     worker->moveToThread(&receiver);
     connect(&receiver, &QThread::finished, worker, &QObject::deleteLater);
-    connect(worker, &receiveThread::pulledFromQueue, this, &receiveCanvas::syncSlot);
+    //connect(worker, &receiveThread::pulledFromQueue, this, &receiveCanvas::syncSlot);
     receiver.start();
 
     setAttribute(Qt::WA_StaticContents);

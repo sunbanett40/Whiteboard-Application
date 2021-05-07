@@ -58,7 +58,6 @@ private:
     //QQueue<bool[40]> serialisedQueue;
 };
 
-/*
 template <class T>
 class queue
 {

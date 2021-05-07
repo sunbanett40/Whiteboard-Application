@@ -26,7 +26,7 @@ queue::queue(int setupSize)
     //Open queue
     isOpen = true;
 }
-/*
+
 void queue::pushToQueue(QImage pushedItem)
 {
     // Create temporary item to store pushed item
@@ -56,7 +56,8 @@ void queue::pushToQueue(QImage pushedItem)
     // Unlock thread so queue can be accessed again
     mutex.unlock();
 }
-/*void queue::pushToQueue(bool pushedItem[40])
+
+void queue::pushToQueue(bool pushedItem[40])
 {
     // Create temporary item to store pushed item
     bool tempItem[40];
@@ -88,8 +89,8 @@ void queue::pushToQueue(QImage pushedItem)
     //usleep(10);
     // Unlock thread so queue can be accessed again
     mutex.unlock();
-}*/
-/*
+}
+
 void queue::pullFromQueueRequest()
 {
     // Create temporary queue to store items
@@ -114,7 +115,6 @@ void queue::pullFromQueueRequest()
     //emit pullFromQueue(pulledItem);
 }
 
-/*
 template <class T>
 queue<T>::queue(int setupSize)
 {

@@ -14,13 +14,16 @@ void receiveThread::pullSerialStruct()
     mutex.lock();
     drawInfoPosition pulledItem;
 
-    //serialQueue->pullFromQueueRequest();
+    //serialQueue->pullFromQueueRequest(serialData);
     receiveThread::checkParityBit(pulledItem);
     mutex.unlock();
 
     bool serialsedArray[48];
 
+    //remove when queue works
     drawInfoPosition serialData;
+    serialData.opcode =0; serialData.xPosition =0; serialData.yPosition =0;
+
     uint16_t temp[3] = {serialData.opcode, serialData.xPosition, serialData.yPosition};
 
     // Loop over each element of the temporary array

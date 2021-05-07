@@ -14,7 +14,7 @@ void sendThread::pushSerialStruct(drawInfoPosition serialData)
     this -> setParityBit(serialData);
 
     uint16_t temp[3] = {serialData.opcode, serialData.xPosition, serialData.yPosition};
-    bool serialsedArray[48];
+    bool serialsedArray[48] = {};
 
     // Loop over each element of the temporary array
     for(int i = 0; i < 3; i++)
