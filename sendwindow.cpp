@@ -84,7 +84,7 @@ void sendWindow::createMenus()
     connect(open, &QAction::triggered, this, &sendWindow::sync);
     connect(clear, &QAction::triggered, canvas, &sendCanvas::clearArea);
 
-    // Toolbar
+    //Toolbar
     auto *colour = new QAction("&Colour", this);
     auto *width = new QAction("&Pen Width", this);
 

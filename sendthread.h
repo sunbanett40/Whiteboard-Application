@@ -5,7 +5,7 @@
 #include <QMutex>
 #include <QPainter>
 
-#include "serialstruct.h"
+#include "drawinformation.h"
 #include "queue.h"
 
 class sendThread : public QObject
@@ -16,10 +16,12 @@ public:
     sendThread();
 
 public slots:
-    void pushSerialStruct(QImage serialData);
+    void pushSerialStruct(drawInfoPosition serialData);
+    void pushSerialStruct(drawInfoPen serialData);
 
 protected:
-    void setParityBit(command serialData);
+    void setParityBit(drawInfoPosition serialData);
+    void setParityBit(drawInfoPen serialData);
 
 private:
     QMutex mutex;
