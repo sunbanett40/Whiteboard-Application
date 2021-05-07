@@ -545,6 +545,13 @@ The parity calculations used in the implemented protocol are relatively simple a
 The lack of a functioning queue was again an issue. As there was no shared class between the threads so they were unable to flip shared bits, emulating the role of a GPIO pin.
 
 \section{Conclusion}
+A Whiteboard chat application was successfully created. However, it did not acheive all the aims that it had been set.
+
+The created application had the basic feature range of a simple paint application. It had an intuitive UI that took full advantage of the Qt libraries, and was easy to use. The program used a simplex communication protocol between the send canvas and a receive canvas that would transmit the draw information.
+
+The application attempted to send serialised versions of the commands through send and receive threads. Although the threads were created successfully the communication between them was nto successfully implemented.
+
+The progress of the application was severly limited by the lack of a thread safe queue that the send and receive threads could communicate through. This prevented a half-duplex communication protocol being implemented as there was no common class between the threads.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
