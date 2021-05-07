@@ -50,7 +50,7 @@
 % TITLE AND AUTHOR
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % This info is reused in places, so input it here and it will be updated globally.
-\newcommand{\docTitle}{Whiteboard Chat Applictaion with Half-Duplex Communication}
+\newcommand{\docTitle}{Whiteboard Chat Applictaion with Simplex Communication}
 \newcommand{\docAuthor}{Joesph Butterworth}
 
 % Put the metadata in the PDF output.
@@ -159,7 +159,12 @@ that they don’t disappear when the window is repainted?
 QPainter is a part of the qt library family that allows you to draw pixel graphics. For this application, QPainter will be used to modify a QImage.
 
 \subsection{Threads and Mutexes}
-text
+Threads - threads are a set of calculations run in the order of using a process. Threads are run in parallel meaning more operations can be run at any given time.
+
+pthreads (POSIX threads) - is a library in C style languages that allows for thread control.This allows multiple processes to be run simultaneously in a program
+
+QThread - is a class that uses pthreads in qt create. It has member functions that enable  access to pthread functions in an object orientated method. 
+
 
 How will you use threads to send and receive these packets, while the rest of
 the application keeps running? How will you use mutexes to make any relevant
@@ -186,7 +191,7 @@ repainted the diagram isn’t lost?
 \subsection{Class Architecture of the Whiteboard Applicatoin}
 
 \section{Implementation}
-\subsection{The GUI - Send and Receive Window}
+\subsection{The GUI - Send and Receive Windows}
 On initiasation, the program creates new instances of the sendWindow and receiveWindow classes. The new windows are then given defined parameters, they are named and resized to a proportion of the screen they are being displayed on.
 $\\$ \figsquish
 \begin{lstlisting}[language=C++]
@@ -380,7 +385,7 @@ The send and receive threads cannot directly communicate with each other using s
 
 However, the threadsafe queue that was implemented failed to initialise correctly and either created a compile error $undefiened\ reference\ to\ vtable$ or worse would compile then give a SIGSEGV error when opening. A large portion of the time spent on this project was spent trying to resolve this issue. The errors in the queue class template were never resolved. Therefore, the send and receive thread were never able to communicate.
 
-\subsection{Communication Protocol using Booleans}
+\subsection{Communication Protocol Using Booleans}
 Despite the inability for the threads to communicate there was still progress in creating a communication protocol between them. For a communication to occur there was to be shared bits in the queue class that could be toggled by either thread. One to say the data packet had been received and one to say that the parity check had failed.
 
 The send thread was going to set the first bit in the serialData.opcode if there was an odd number of bits, so that there was always an even number of bits in the transmition. It would do this by looping over the entire drawInfoPosition struct and keep a count of every set bit,  if that count was zero it would then perform a bitwise OR operation to set the parity bit.
@@ -514,6 +519,35 @@ The receive thread would perform a similar operation, counting every bit in the 
 
 
 \section{Discussion}
+\subsection{GUI - Send and Receive Windows}
+The send and receive window were initiasised in a relatively standard way. However, the use of getting the screen geometry information allowed the program to scale better across different users. This program was written on a 1080p monitor, a visually pleasing size on this display is likely to be too small for any end user that has a 2160p monitor.
+
+The send window was well featured with the ability to change the pen and, save and load the canvas as images. This gave the send window a feature set similar to a simple paint application. This is a good range of utility for a whiteboard application to be able to do.
+
+In addition, the layout of features is similar in format to other contemporary desktop applications. This makes the program intuitive and easy to use as any user will know where to look for the tool that they are looking for.
+
+The addition of an undo feature is a nice quality of life feature that makes the application more pleasurable to use. This was implemented by snapshoting the draw area image every time the mouse was released. The lack of a redo feature is apparent. The redo functionality could be implemented using a lot of the same code as the undo feature.
+
+\subsection{The Serialise and Deserialise Drawing Commands}
+The method to serialise and deserialise the drawing commands is a relatively common method in C++ programming. This makes it a reliable method as it is unlikely to break from a new version of Qt being used. In addition, this means that if there are found to be any issues they are likely to be well documented reducing the time needed to fix the issue. However, not using any features from Qt or Vector means that the code is not as succinct as it otherwise may have been.
+
+Furthermore, the use of the drawInfoPosition struct is another instance of bloat in the code, as any conversion from QPoint or QPen could be carried out at the serialisation stage. This is the result of previous implementation of drawing and could be streamlined. Although bloated, this does not apppear to have anylarge detrement to the code itself.
+
+\subsection{The Send and Receive Threads}
+The send and receive threads successfully initialised inside the instances of the canvases. The canvas was able to communicate with the thread using signals and slots. This meant that information could easily be passed down into the thread to go to the receive window.
+
+The use of QMutex was a useful way of ensuring that functions were thread safe. QMutex meant that a lot of the the complicated threading issues were conveniently handled by the program. This removed a level of risk from a race condition occuring.
+
+The lack of a functioning queue was a severe detrement to this project. Lacking a queue there was no common object that the send and receive threads could communicate through. This made the threads practically pointless as they were unable to fulfill the communication they were there to enable.
+
+Althought the implemented queue appeared to be thread safe and controlled the items put onto and pulled off of it correctly the inability to compile it with the rest of the program suggests that there is likely a problem with the use of QMutex in the class.
+
+\subsection{Communicaiton Protocol Using Booleans}
+Parity calculations are a useful way of checking that the received information has been received correctly. The use of parity meant that the communication between threads would have been consided a half-duplex protocol.
+
+The parity calculations used in the implemented protocol are relatively simple and do not accaount for two bit flips in a signal. Nor does the parity method used in this protocol tell you what part of the information has an error. However, this is likely to be sufficient for the communication between two devices with GPIO as there is likely to be very little noise on the short wired connection.
+
+The lack of a functioning queue was again an issue. As there was no shared class between the threads so they were unable to flip shared bits, emulating the role of a GPIO pin.
 
 \section{Conclusion}
 
